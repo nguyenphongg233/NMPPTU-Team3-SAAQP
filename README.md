@@ -1,7 +1,11 @@
 # Self-adaptive algorithms for quasiconvex programming and applications to machine learning
+Deadline 23/12
 
 ## Mục tiêu
-Đọc hiểu, Cài đặt thuật toán, Viết báo cáo (LaTeX) và Thuyết trình (Beamer).
+- Đọc hiểu, Cài đặt thuật toán, Viết báo cáo (LaTeX) và Thuyết trình (Beamer).
+## Công cụ
+- Python 3.8+, PyTorch, NumPy, Matplotlib  
+- LaTeX, Beamer
 
 ## Phân công theo Team
 
@@ -19,7 +23,7 @@
 
 ---
 
-### Team 2: Cài đặt thuật toán (implementation/)
+### Team 2: Cài đặt thuật toán (implementation/) - 4 người
 **Sản phẩm cần bàn giao:**
 - Code 3 thuật toán: gda.py, da.py, sgda.py
 - Code các ví dụ trong paper
@@ -33,7 +37,7 @@
 
 ---
 
-### Team 3: Slide thuyết trình (slides/)
+### Team 3: Slide thuyết trình (slides/) - 5 người
 **Sản phẩm cần bàn giao:**
 - slides.pdf
 - media/ chứa ảnh thí nghiệm
@@ -44,17 +48,7 @@
 - Thiết kế slide rõ ràng, dễ trình bày.
 
 ---
-
-## Công cụ
-- Python 3.8+, PyTorch, NumPy, Matplotlib  
-- LaTeX, Beamer  
-
-## Deadline
-**23/12**
-
----
-
-## Cấu trúc thư mục đề xuất + Giải thích
+## Cấu trúc thư mục
 
 ```
 NMPPTU-Team/
