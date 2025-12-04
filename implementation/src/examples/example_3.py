@@ -68,8 +68,8 @@ if __name__ == "__main__":
     nonlinear_constraint = NonlinearConstraint(g1, -np.inf, 0, jac=g1_dx, hess=BFGS())
     bounds = Bounds([0.0001 for i in range(n)], [np.inf for i in range(n)])
 
-    num = 5
-    max_iters = 20
+    num = 2
+    max_iters = 50
 
     sol_all,sol_all1 = [],[]
     val_all,val_all1 = [],[]

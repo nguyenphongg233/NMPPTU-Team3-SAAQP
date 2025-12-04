@@ -63,7 +63,7 @@ def plot_x(sol_all,count,max_iters):
     
 if __name__ == "__main__":
     num = 20 # number of init points
-    max_iters = 1000
+    max_iters = 100
     sol_all,sol_all1 = [],[]
     val_all,val_all1 = [],[]
 
