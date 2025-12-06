@@ -13,11 +13,11 @@ from scipy.optimize import NonlinearConstraint
 
 
 class RNN:
-    def __init__(self, A=None, b=None, step=0.05, n_steps=500, log=False):
+    def __init__(self, A=None, b=None, step=0.05, n_steps=100, log=False):
         self.A = np.array(A) if A is not None else None
         self.b = np.array(b).reshape(-1) if b is not None else None
 
-        self.h = step
+        self.h = np.array([step])
         self.n_steps = n_steps
         self.log = log
 
@@ -34,23 +34,23 @@ class RNN:
         if s > 0:
             return 1
         elif s == 0:
-            return np.random.rand()
+            return np.random.rand(1)
         return 0
 
    
     def ode_solve_G(self, z0, G):
-        z = z0.astype(float).reshape(-1, 1)
+        z = z0
 
         for _ in range(self.n_steps):
             h = self.h
 
             k1 = h * G(z)
-            k2 = h * G(z + 0.5 * k1)
-            k3 = h * G(z + 0.5 * k2)
-            k4 = h * G(z + k3)
-
-            z = z + (k1 + 2 * k2 + 2 * k3 + k4) / 6
-
+            k2 = h * G(z + 0.5 * h)
+            k3 = h * G(z + 0.5 * h)
+            k4 = h * G(z + h)
+            k = (1/6)*(k1+2*k2+2*k3+k4)
+            z = z + k
+            z=np.array([z0]).reshape(-1,1)
         return z
 
     def build_G(self, f_dx, g_i, grad_gi):
@@ -89,6 +89,6 @@ class RNN:
             history.append(xt.reshape(1, -1).tolist()[0])
 
             if self.log:
-                print(f"[RNN] iteration {t+1}/{max_iters}, f_val = {f(xt.reshape(-1))},x={xt.reshape(-1)}")
+                print(f"[RNN] iteration {t+1}/{max_iters}, f_val = {f(xt.reshape(-1))}")
 
         return history, xt.reshape(1, -1)

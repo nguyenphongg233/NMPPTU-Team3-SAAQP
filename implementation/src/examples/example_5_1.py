@@ -16,6 +16,8 @@ from scipy.optimize import Bounds
 from scipy.optimize import LinearConstraint
 from scipy.optimize import NonlinearConstraint
 
+import algorithms.gda as gda_module
+import algorithms.rnn as rnn_module
 def _nearest_distances(X, k=1):
     """
     Returns the distance to the kth nearest neighbor for every point in X
@@ -179,7 +181,7 @@ cons = ({'type': 'eq',
 bounds = Bounds([0 for i in range(n)], [np.inf for i in range(n)])
 
 
-gda_alg = GDA(lamda = 10, K = 0.8, cons = cons, bounds = bounds)
+gda_alg = gda_module.GDA(lamda = 10, K = 0.8, cons = cons, bounds = bounds)
 
 number_of_runs = 1
 max_iters = 30
@@ -202,7 +204,7 @@ def grad_constraints_ineq(x):
     grad[violated_indices] = -1.0
     return grad
     
-rnn_alg = RNN(A = A_eq, b = b_eq, step=0.001, n_steps=500, log=False)
+rnn_alg = rnn_module.RNN(A = A_eq, b = b_eq, step=0.001, n_steps=500, log=False)
 
 for i in range(number_of_runs):
     x_0 = np.random.rand(1, n)
