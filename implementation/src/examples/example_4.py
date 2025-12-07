@@ -47,51 +47,62 @@ cons = (
 )
 
 
-def plot_x(sol_all,count,max_iters):
+def plot_x(sol_gda_all, sol_rnn_all, count, max_iters):
+
     t = [i for i in range(max_iters+1)]
-    plt.figure(figsize=(8,8))
-    plt.rcParams.update({'font.size': 16})
+    
+    n_vars = sol_gda_all[0].shape[1]
+    
+    # Define distinct colors for each variable (2n colors total)
+    gda_colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan'][:n_vars]
+    rnn_colors = ['darkred', 'darkblue', 'darkgreen', 'darkorange', 'darkviolet', 'saddlebrown', 'deeppink', 'dimgray', 'darkolivegreen', 'darkcyan'][:n_vars]
+    
+    plt.figure(figsize=(14, 10))
+    plt.rcParams.update({'font.size': 12})
+    
     for i in range(count):
-        if i ==0:
-            text_color = 'red'
-            text_label = r'$x_{1}(t)$'
-        else:
-            text_color = 'green'
-            text_label = r'$x_{2}(t)$'
-        plt.plot(t, sol_all[i][:,0],color=text_color,label=text_label,linewidth=1)
-        plt.plot(t, sol_all[i][:,1],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,2],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,3],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,4],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,5],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,6],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,7],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,8],color=text_color,linewidth=1)
-        plt.plot(t, sol_all[i][:,9],color=text_color,linewidth=1)
-    plt.xlabel('iteration')
-    plt.ylabel('x(t)')
-    plt.legend([r'$x_{1}(t)$',r'$x_{2}(t)$']) #,r'$x_{4}(t)$',r'$x_{5}(t)$',r'$x_{6}(t)$',r'$x_{7}(t)$',r'$x_{8}(t)$',r'$x_{9}(t)$',r'$x_{10}(t)$'])
-    plt.legend()
+        # Plot all n variables for GDA with distinct colors (dashed lines)
+        for j in range(n_vars):
+            label = rf'GDA: $x_{{{j+1}}}(t)$' if i==0 else ""
+            plt.plot(t, sol_gda_all[i][:, j], 
+                    color=gda_colors[j], 
+                    label=label,
+                    linewidth=1.5, 
+                    linestyle='--', 
+                    alpha=0.7)
+        
+        # Plot all n variables for RNN with distinct colors (solid lines)
+        for j in range(n_vars):
+            label = rf'RNN: $x_{{{j+1}}}(t)$' if i==0 else ""
+            plt.plot(t, sol_rnn_all[i][:, j], 
+                    color=rnn_colors[j], 
+                    label=label,
+                    linewidth=1.8, 
+                    alpha=0.8)
+    
+    plt.xlabel('Iteration', fontsize=13)
+    plt.ylabel('x(t)', fontsize=13)
+   #plt.title(f'Comparison: GDA vs RNN Convergence (all {n_vars} variables)', fontsize=14, fontweight='bold')
+    plt.legend(loc='best', ncol=2, fontsize=9)
+    plt.grid(True, linestyle=':', alpha=0.5)
+    plt.tight_layout()
     plt.show()
 
 def main():
     n = 10
-    max_iters = 100
+    max_iters = 50
     num_init_points = 1
 
-    print(f"=== Optimization Comparison: GDA vs RNN (n={n}) ===")
     
-    # Set up GDA with proper learning rate
     gda_instance=gda_module.GDA()
     gda_instance.set_constraints(cons)
-    limit = np.sqrt(20) # hoặc tham số R
+    limit = np.sqrt(20)
     
     gda_instance.set_bounds([-limit]*n, [limit]*n)
     #gda_instance.set_bounds([-np.inf]*n, [np.inf]*n)
-    #lamda = 0.5  # Learning rate scaled for this problem
-    #gda_instance.set_lamda(lamda)
+    lamda = 0.5  
+    gda_instance.set_lamda(lamda)
     
-    # Set up RNN with reduced n_steps for fair comparison
     rnn_instance = rnn_module.RNN(A=A_mat, b=b_vec, step=0.05, n_steps=100, log=False)
 
     sol_gda_all = []
@@ -105,28 +116,24 @@ def main():
     for i in range(num_init_points):
         x0 = np.random.rand(1, n)
         x0 = gda_instance.projection(x0, n)
-        #count += 1
         res_gda, val_gda = gda_instance.gda(x0.copy(), max_iters, f, f_dx, n)
         final_val_gda = -np.log(-f(res_gda[-1]))
-        #final_test=-np.log(-val_gda[-1])
-        print("GDA-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",val_gda[-1])
         tmp_gda = np.array(res_gda)[:,:]
         sol_gda_all.append(tmp_gda)
-        val_gda_all.append(val_gda)
-        print(f"  GDA - f(x*): {val_gda[-1]},{final_val_gda}" )
-        res_rnn_hist, xt_rnn = rnn_instance.rnn(x0.copy(), max_iters, f, f_dx, g_i, derivative_g_i)
-        tmp_rnn = np.array(res_rnn_hist)
-        sol_rnn_all.append(tmp_rnn)
-        print(f"  RNN - f(x*): {-np.log(-f(xt_rnn.reshape(-1)))}")
-        final_val_rnn = -np.log(-f(xt_rnn.reshape(-1)))
+        val_gda_all.append(final_val_gda)
+        print("GDA-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",final_val_gda)
         
-        #print(f"  RNN - x*: {xt_rnn}")
-        #print(f"  RNN - f(x*): {final_val_rnn}")
-        #print(f"  Difference (RNN - GDA): {final_val_rnn - final_val_gda}")
+        res_rnn_hist, xt_rnn = rnn_instance.rnn(x0.copy(), max_iters, f, f_dx, g_i, derivative_g_i)
+        tmp_rnn = np.array(res_rnn_hist)[:,:]
+        final_val_rnn = -np.log(-f(xt_rnn.reshape(-1)))
+
+        sol_rnn_all.append(tmp_rnn)
+        val_rnn_all.append(final_val_rnn)
+        print("RNN-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",final_val_rnn)
         
         count += 1
 
-        #plot_x(sol_gda_all, sol_rnn_all, count, max_iters)
+        plot_x(sol_gda_all, sol_rnn_all, count, max_iters)
 
 if __name__ == "__main__":
     main()
