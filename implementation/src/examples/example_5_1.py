@@ -8,6 +8,9 @@ from autograd import grad
 import autograd.numpy as np1
 from numpy import linalg as LA
 import matplotlib.pyplot as plt
+import sys, os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 from scipy.optimize import minimize
 import random
 import time
@@ -131,7 +134,7 @@ def setup_problem(file_path):
     
     return p, Q, features, labels
 
-file_name = 'parkinsons.data'
+file_name = os.path.join(os.path.dirname(__file__), 'parkinsons.data')
 
 p, Q, X, y = setup_problem(file_name)
 
