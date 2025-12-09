@@ -81,10 +81,10 @@ class RNN:
         return np.sqrt(np.sum((x-y)**2))
 
     def projection(self, y, n):
-        y_flat = y.reshape(-1)
-        res = minimize(self.rosen, y_flat, args=(y_flat), jac="2-point",hess=BFGS(),
-                constraints=self.cons,method='trust-constr', options={'disp': False})
-        return res.x
+        y_flat = y.reshape(-1) if hasattr(y, 'reshape') else np.array(y).reshape(-1)
+        res = minimize(self.rosen, y_flat, args=(y_flat,), jac="2-point", hess=BFGS(),
+                constraints=self.cons, method='trust-constr', options={'disp': False})
+        return res.x.reshape(1, -1)
   
     def rnn(self, x0, max_iters, f, f_dx, g_i, grad_gi):
         xt = x0.reshape(-1, 1)
