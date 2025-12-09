@@ -4,6 +4,7 @@ from autograd import grad
 import matplotlib.pyplot as plt
 from scipy.optimize import Bounds, BFGS
 import sys, os
+import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 import algorithms.gda  as gda_module
@@ -116,24 +117,37 @@ def main():
     for i in range(num_init_points):
         x0 = np.random.rand(1, n)
         x0 = gda_instance.projection(x0, n)
+        
+        # GDA execution time
+        start_time_gda = time.time()
         res_gda, val_gda = gda_instance.gda(x0.copy(), max_iters, f, f_dx, n)
+        end_time_gda = time.time()
+        time_gda = end_time_gda - start_time_gda
+        
         final_val_gda = -np.log(-f(res_gda[-1]))
         tmp_gda = np.array(res_gda)[:,:]
         sol_gda_all.append(tmp_gda)
         val_gda_all.append(final_val_gda)
         print("GDA-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",final_val_gda)
+        print(f"GDA Execution Time: {time_gda:.6f} seconds\n")
         
+        # RNN execution time
+        start_time_rnn = time.time()
         res_rnn_hist, xt_rnn = rnn_instance.rnn(x0.copy(), max_iters, f, f_dx, g_i, derivative_g_i)
+        end_time_rnn = time.time()
+        time_rnn = end_time_rnn - start_time_rnn
+        
         tmp_rnn = np.array(res_rnn_hist)[:,:]
         final_val_rnn = -np.log(-f(xt_rnn.reshape(-1)))
 
         sol_rnn_all.append(tmp_rnn)
         val_rnn_all.append(final_val_rnn)
         print("RNN-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",final_val_rnn)
+        print(f"RNN Execution Time: {time_rnn:.6f} seconds\n")
         
         count += 1
 
-        plot_x(sol_gda_all, sol_rnn_all, count, max_iters)
+        #plot_x(sol_gda_all, sol_rnn_all, count, max_iters)
 
 if __name__ == "__main__":
     main()

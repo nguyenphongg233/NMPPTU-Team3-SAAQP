@@ -187,7 +187,7 @@ bounds = Bounds([0 for i in range(n)], [np.inf for i in range(n)])
 gda_alg = gda_module.GDA(lamda = 10, K = 0.8, cons = cons, bounds = bounds)
 
 number_of_runs = 1
-max_iters = 30
+max_iters = 50
 gda_solution = []
 rnn_solution = []
 
