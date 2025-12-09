@@ -13,9 +13,10 @@ from scipy.optimize import NonlinearConstraint
 
 
 class RNN:
-    def __init__(self, A=None, b=None, step=0.05, n_steps=100, log=False):
+    def __init__(self, A=None, b=None, step=0.05, n_steps=100, log=False,cons=None):
         self.A = np.array(A) if A is not None else None
         self.b = np.array(b).reshape(-1) if b is not None else None
+        self.cons = cons
 
         self.h = np.array([step])
         self.n_steps = n_steps
@@ -45,12 +46,12 @@ class RNN:
             h = self.h
 
             k1 = h * G(z)
-            k2 = h * G(z + 0.5 * h)
-            k3 = h * G(z + 0.5 * h)
+            k2 = h * G(z + h/2)
+            k3 = h * G(z + h/2)
             k4 = h * G(z + h)
             k = (1/6)*(k1+2*k2+2*k3+k4)
-            z = z + k
             z=np.array([z0]).reshape(-1,1)
+            z = z + k
         return z
 
     def build_G(self, f_dx, g_i, grad_gi):
@@ -76,7 +77,14 @@ class RNN:
             return Fx - Px - eq_term
 
         return G
+    def rosen(self, x, y):
+        return np.sqrt(np.sum((x-y)**2))
 
+    def projection(self, y, n):
+        y_flat = y.reshape(-1)
+        res = minimize(self.rosen, y_flat, args=(y_flat), jac="2-point",hess=BFGS(),
+                constraints=self.cons,method='trust-constr', options={'disp': False})
+        return res.x
   
     def rnn(self, x0, max_iters, f, f_dx, g_i, grad_gi):
         xt = x0.reshape(-1, 1)

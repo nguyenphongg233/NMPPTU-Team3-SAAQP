@@ -104,7 +104,7 @@ def main():
     lamda = 0.5  
     gda_instance.set_lamda(lamda)
     
-    rnn_instance = rnn_module.RNN(A=A_mat, b=b_vec, step=0.05, n_steps=100, log=False)
+    rnn_instance = rnn_module.RNN(A=A_mat, b=b_vec, step=0.05, n_steps=100, log=False, cons=cons)
 
     sol_gda_all = []
     sol_rnn_all = []
@@ -120,7 +120,7 @@ def main():
         
         # GDA execution time
         start_time_gda = time.time()
-        res_gda, val_gda = gda_instance.gda(x0.copy(), max_iters, f, f_dx, n)
+        res_gda, val_gda = gda_instance.gda(x0, max_iters, f, f_dx, n)
         end_time_gda = time.time()
         time_gda = end_time_gda - start_time_gda
         
@@ -132,8 +132,10 @@ def main():
         print(f"GDA Execution Time: {time_gda:.6f} seconds\n")
         
         # RNN execution time
+        x1=np.random.rand(1,n)
+        x1=rnn_instance.projection(x1,n)
         start_time_rnn = time.time()
-        res_rnn_hist, xt_rnn = rnn_instance.rnn(x0.copy(), max_iters, f, f_dx, g_i, derivative_g_i)
+        res_rnn_hist, xt_rnn = rnn_instance.rnn(x1, max_iters, f, f_dx, g_i, derivative_g_i)
         end_time_rnn = time.time()
         time_rnn = end_time_rnn - start_time_rnn
         
@@ -142,7 +144,7 @@ def main():
 
         sol_rnn_all.append(tmp_rnn)
         val_rnn_all.append(final_val_rnn)
-        print("RNN-Agorithms : Initial point:",x0,"Final point:",res_gda[-1],"Final value:",final_val_rnn)
+        print("RNN-Agorithms : Initial point:",x1,"Final point:",xt_rnn.reshape(1, -1),"Final value:",final_val_rnn)
         print(f"RNN Execution Time: {time_rnn:.6f} seconds\n")
         
         count += 1
