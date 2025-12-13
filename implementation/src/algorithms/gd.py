@@ -18,8 +18,8 @@ class GD:
         self.sigma = sigma
         self.lamda = lamda
         self.K = K
-        self.bounds = bounds if bounds is not None else Bounds([0, 0], [np.inf, np.inf])
-        self.cons = cons if cons is not None else ({'type': 'ineq', 'fun': lambda x: np.array([1]), 'jac': lambda x: np.array([2])},)
+        self.bounds = bounds #if bounds is not None else Bounds([0, 0], [np.inf, np.inf])
+        self.cons = cons #if cons is not None else ({'type': 'ineq', 'fun': lambda x: np.array([1]), 'jac': lambda x: np.array([2])},)
         self.log = log
 
     def set_sigma(self, sigma):
@@ -63,8 +63,8 @@ class GD:
         for t in range(max_iters):
             y = x_0 - lda*f_dx(x_0) if mu0 is None else x_0 - lda*f_dx(x_0,mut)
             x_pre = x_0.copy()
-            x_0 = self.projection(y,n)
-
+            if self.bounds or self.cons: x_0 = self.projection(y,n)
+            else: x_0 = y
             if mu0 is not None:
                 mut = mut * np.exp(-alpha * t)
             point.append(x_0)
