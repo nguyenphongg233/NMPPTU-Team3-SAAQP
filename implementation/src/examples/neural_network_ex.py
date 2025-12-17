@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.model_selection import train_test_split
 import pickle
+import time
 
 
 np.random.seed(20)
@@ -128,11 +129,13 @@ def mlp_predict(X, W1, b1, W2, b2):
 def my_neural_network(W15, b15, W25, b25,
                       nepoches = 2000,
                       batch_size = 3000,
-                      lr=1):
+                      lr=1,
+                      permutation=True):
     """
     X: N x d0
     Y: (N,) vector
     """
+    t0 = time.perf_counter()
 
     N = X_train.shape[0]
     nbatches = int(np.ceil(float(N)/batch_size))
@@ -146,8 +149,11 @@ def my_neural_network(W15, b15, W25, b25,
     accuracy_history = []
     loss_history = []
     for ep in range(nepoches):
-        # mix_ids = np.random.permutation(N) # mix data
-        mix_ids = np.arange(N)
+        if(permutation):
+            mix_ids = np.random.permutation(N) # mix data
+        else:
+            mix_ids = np.arange(N)
+
         avarage_loss = 0
         for i in range(nbatches):
             batch_ids = mix_ids[batch_size*i:min(batch_size*(i+1), N)]
@@ -181,6 +187,9 @@ def my_neural_network(W15, b15, W25, b25,
         y_pred = mlp_predict(X_test, W1, b1, W2, b2)
         accuracy_history.append(100*np.mean(y_pred == y_test))
         loss_history.append(avarage_loss/nbatches)
+
+    dt = time.perf_counter() - t0
+    print(f"GD took {dt:.6f}s")
     return accuracy_history, loss_history
 
 
@@ -189,11 +198,13 @@ def neural_network_with_GDA(W15, b15, W25, b25,
                             batch_size = 3000,
                             lr=1,
                             my_sigma=0.1,
-                            my_kappa=0.7):
+                            my_kappa=0.7,
+                            permutation=True):
     """
     X: N x d0
     Y: (N,) vector
     """
+    t0 = time.perf_counter()
     my_lambda = lr
 
     N = X_train.shape[0]
@@ -208,8 +219,10 @@ def neural_network_with_GDA(W15, b15, W25, b25,
     accuracy_history = []
     loss_history = []
     for ep in range(nepoches):
-        # mix_ids = np.random.permutation(N) # mix data
-        mix_ids = np.arange(N)
+        if(permutation):
+            mix_ids = np.random.permutation(N) # mix data
+        else:
+            mix_ids = np.arange(N)
         avarage_loss = 0
         for i in range(nbatches):
             batch_ids = mix_ids[batch_size*i:min(batch_size*(i+1), N)]
@@ -247,18 +260,21 @@ def neural_network_with_GDA(W15, b15, W25, b25,
 
             sub = my_lambda*my_sigma*(np.sum(grad_W1**2)+np.sum(grad_W2**2)+np.sum(grad_b1**2)+np.sum(grad_b2**2))
             temp = current_loss - sub
-            if ep==100 and i==20:
-                print("epoch 200 and i = 20")
-                print(my_lambda)
-                print(crossentropy_loss(Y_hat, y_batch))
-                print(current_loss)
-                print(sub)
+            # if ep==100 and i==20:
+            #     print("epoch 200 and i = 20")
+            #     print(my_lambda)
+            #     print(crossentropy_loss(Y_hat, y_batch))
+            #     print(current_loss)
+            #     print(sub)
             if(crossentropy_loss(Y_hat, y_batch) > temp):
                 my_lambda *= my_kappa
 
         y_pred = mlp_predict(X_test, W1, b1, W2, b2)
         accuracy_history.append(100*np.mean(y_pred == y_test))
         loss_history.append(avarage_loss/nbatches)
+
+    dt = time.perf_counter() - t0
+    print(f"With kappa={my_kappa}, GDA took {dt:.6f}s")
     return accuracy_history, loss_history
 
 
@@ -268,6 +284,7 @@ def neural_network_with_GDA(W15, b15, W25, b25,
 NUM_OF_EPOCHES = 200
 BATCH_SIZE = 50
 TEST_SIZE = 500
+PERMUTATION = False
 
 SIGMA = 0.1 # sigma
 KAPPA = 0.7
@@ -280,41 +297,44 @@ d2 = C = 3 # number of classes
 
 
 
-
-accuracy_history, loss_history = my_neural_network(W1,
-                                                   b1,
-                                                   W2,
-                                                   b2,
+print("Permutation: " + str(PERMUTATION))
+accuracy_history, loss_history = my_neural_network(W1, b1, W2, b2,
                                                    nepoches = NUM_OF_EPOCHES,
                                                    batch_size = BATCH_SIZE,
-                                                   lr=ETA)
+                                                   lr=ETA,
+                                                   permutation=PERMUTATION)
 
 accuracy_history_gda = []
 loss_history_gda = []
-kappa_array = [0.7, 0.8, 0.9]
+kappa_array = [0.75, 0.85, 0.95]
 
 for i in range(3):
-    temp1, temp2 = neural_network_with_GDA(W1,
-                                                                    b1,
-                                                                    W2,
-                                                                    b2,
-                                                                    nepoches = NUM_OF_EPOCHES,
-                                                                    batch_size = BATCH_SIZE,
-                                                                    lr=ETA,
-                                                                    my_sigma=SIGMA,
-                                                                    my_kappa=kappa_array[i])
+    temp1, temp2 = neural_network_with_GDA(W1, b1, W2, b2,
+                                           nepoches = NUM_OF_EPOCHES,
+                                           batch_size = BATCH_SIZE,
+                                           lr=ETA,
+                                           my_sigma=SIGMA,
+                                           my_kappa=kappa_array[i],
+                                           permutation=PERMUTATION)
     accuracy_history_gda.append(temp1)
     loss_history_gda.append(temp2)
-    
 
-with open("model_params_without_permutation.pkl", "wb") as f:
+
+if(PERMUTATION):
+    result_file_name = "model_params.pkl"
+    filename = 'neural_network.pdf'
+else:
+    result_file_name = "model_params_without_permutation.pkl"
+    filename = 'neural_network_without_permutation.pdf'
+
+with open(result_file_name, "wb") as f:
     pickle.dump((accuracy_history,
                  loss_history,
                  accuracy_history_gda,
                  loss_history_gda), f)
 
 
-filename = 'neural_network_without_permutation.pdf'
+
 with PdfPages(filename) as pdf:
     fig, ax = plt.subplots(1, 2, figsize=(8, 5), layout='constrained')
     ax[0].plot(np.arange(NUM_OF_EPOCHES), accuracy_history, label='GD')
