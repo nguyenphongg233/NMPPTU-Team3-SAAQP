@@ -60,6 +60,8 @@ class GDA:
         val.append(f(x_0) if mu0 is None else f(x_0,mut))
 
         x_pre = x_0
+        final_iter = 0
+
         for t in range(max_iters):
             y = x_0 - lda*f_dx(x_0) if mu0 is None else x_0 - lda*f_dx(x_0,mut)
             x_pre = x_0.copy()
@@ -83,7 +85,13 @@ class GDA:
                 mut = mut * np.exp(-alpha * t)
             point.append(x_0)
             val.append(f(x_0,mut) if mu0 is not None else f(x_0))
+
+            final_iter = t+1
+
+            if abs(x_0 - x_pre).max() < 1e-6:
+                break
+
             if self.log:
                 print(f"Iteration {t+1}/{max_iters}, fval: {val[-1]}, lda: {lda}, x: {x_0}")
 
-        return point,val      
+        return point,val,final_iter    

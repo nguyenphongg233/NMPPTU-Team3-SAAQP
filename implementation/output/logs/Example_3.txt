@@ -1,0 +1,364 @@
+     n |      GDA f(x*) |  #Iter |  Time(s) ||       GD f(x*) |  #Iter |  Time(s)
+---------------------------------------------------------------------------------
+    10 |      80.080568 |      3 |   0.2447 ||      80.080573 |      7 |   0.3834
+    20 |     219.714451 |      4 |   0.6099 ||     219.714455 |      8 |   0.6726
+    50 |     851.700027 |      4 |   0.9028 ||     851.700030 |      9 |   2.5383
+   100 |    2390.314031 |      4 |   5.6882 ||    2390.314040 |      9 |  13.3452
+   200 |    6721.095882 |      5 |  41.3877 ||    6721.095887 |     10 |  53.0749
+   500 |   26426.158664 |      5 |  91.4714 ||   26426.158682 |     10 | 262.8033
+   600 |   34711.054331 |      5 | 160.1987 ||   34711.054335 |     11 | 353.6806
+   700 |   43704.962204 |      5 | 199.9534 ||   43704.962212 |     16 | 1726.5777
+   800 |   53372.127462 |      5 | 352.0395 ||   53372.127469 |     11 | 930.0608
+   900 |   63653.989656 |     11 | 1589.4307 ||   63653.989663 |     11 | 2123.5983
+  1000 |   74522.902256 |      7 | 1260.0110 ||   74522.902265 |     11 | 1617.5378
+
+   100 |    2390.314066 |      7 |  11.9520 ||    2390.314086 |      8 |  12.3069
+   200 |    6721.095888 |      8 |  71.6870 ||    6721.095916 |      9 |  64.0119
+   500 |   26426.159081 |      8 | 373.4149 ||   26426.158672 |     10 | 353.6303
+   600 |   34711.054243 |      8 | 932.1330 ||   34711.054356 |     10 | 529.1590
+   700 |   43704.962762 |      9 | 655.7438 ||   43704.962212 |     12 | 1802.9159
+  1000 |   74522.903053 |      9 | 1639.7005||   74522.902312 |     10 | 1809.7305
+==================================================================================
+
+Comparison table:
+     n |      GDA f(x*) |  #Iter |  Time(s) ||       GD f(x*) |  #Iter |  Time(s)
+---------------------------------------------------------------------------------
+   500 |   26426.158664 |      5 |  91.4714 ||   26426.158682 |     10 | 262.8033
+   600 |   34711.054331 |      5 | 160.1987 ||   34711.054335 |     11 | 353.6806
+   700 |   43704.962204 |      5 | 199.9534 ||   43704.962212 |     16 | 1726.5777
+   800 |   53372.127462 |      5 | 352.0395 ||   53372.127469 |     11 | 930.0608
+   900 |   63653.989656 |     11 | 1589.4307 ||   63653.989663 |     11 | 2123.5983
+  1000 |   74522.902256 |      7 | 1260.0110 ||   74522.902265 |     11 | 1617.5378
+
+
+     n |      GDA f(x*) |  #Iter |  Time(s) ||       GD f(x*) |  #Iter |  Time(s)
+---------------------------------------------------------------------------------
+    10 |      80.080578 |      6 |   0.6899 ||      80.080615 |      6 |   0.3133
+    20 |     219.714476 |      6 |   2.1658 ||     219.714478 |      7 |   0.6119
+    50 |     851.700044 |      7 |   4.1305 ||     851.700047 |      8 |   2.6250
+   100 |    2390.314066 |      7 |  21.9880 ||    2390.314086 |      8 |  20.0044
+   200 |    6721.095888 |      8 | 108.4018 ||    6721.095916 |      9 |  75.5087
+   500 |   26426.159081 |      8 | 421.2375 ||   26426.158672 |     10 | 458.5756
+==================================================================================
+
+   200 |    6721.095888 |      8 |  57.7943 ||    6721.095888 |     10 |  46.1807
+   500 |   26426.159062 |      9 | 273.8755 ||   26426.158673 |     10 | 257.2703
+
+L: 83.25414626299988
+Problem dimension: 100
+Alpha: 19.241878
+Beta: 0.741271
+
+
+================================================================================
+Sweep: running experiments for n in [100, 200, 500]
+================================================================================
+Running n=100...
+
+============================================================
+n: 100, Alpha: 19.241878, Beta: 0.741271
+Running experiment for n=100...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 2405.061288, Step size (lambda) = 0.060057
+ Iteration 2: f(x) = 2391.835459, Step size (lambda) = 0.060057
+ Iteration 3: f(x) = 2390.471082, Step size (lambda) = 0.060057
+ Iteration 4: f(x) = 2390.330448, Step size (lambda) = 0.060057
+ Iteration 5: f(x) = 2390.315773, Step size (lambda) = 0.060057
+ Iteration 6: f(x) = 2390.314229, Step size (lambda) = 0.060057
+ Iteration 7: f(x) = 2390.314066, Step size (lambda) = 0.060057
+Running GD with fixed step size:  0.01201141378401743
+ Iteration 1: f(x) = 2411.515724
+ Iteration 2: f(x) = 2393.685909
+ Iteration 3: f(x) = 2390.850889
+ Iteration 4: f(x) = 2390.399570
+ Iteration 5: f(x) = 2390.327677
+ Iteration 6: f(x) = 2390.316210
+ Iteration 7: f(x) = 2390.314379
+ Iteration 8: f(x) = 2390.314086
+Running n=200...
+
+============================================================
+n: 200, Alpha: 27.144685, Beta: 0.741271
+Running experiment for n=200...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 6759.684732, Step size (lambda) = 0.042540
+ Iteration 2: f(x) = 6725.066959, Step size (lambda) = 0.042540
+ Iteration 3: f(x) = 6721.508145, Step size (lambda) = 0.042540
+ Iteration 4: f(x) = 6721.138991, Step size (lambda) = 0.042540
+ Iteration 5: f(x) = 6721.100425, Step size (lambda) = 0.042540
+ Iteration 6: f(x) = 6721.096364, Step size (lambda) = 0.042540
+ Iteration 7: f(x) = 6721.095934, Step size (lambda) = 0.042540
+ Iteration 8: f(x) = 6721.095888, Step size (lambda) = 0.042540
+Running GD with fixed step size:  0.008507972092949918
+ Iteration 1: f(x) = 6794.583303
+ Iteration 2: f(x) = 6732.985893
+ Iteration 3: f(x) = 6723.012080
+ Iteration 4: f(x) = 6721.404265
+ Iteration 5: f(x) = 6721.145529
+ Iteration 6: f(x) = 6721.103884
+ Iteration 7: f(x) = 6721.097174
+ Iteration 8: f(x) = 6721.096091
+ Iteration 9: f(x) = 6721.095916
+Running n=500...
+
+============================================================
+n: 500, Alpha: 42.855408, Beta: 0.741271
+Running experiment for n=500...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 26576.204300, Step size (lambda) = 0.026932
+ Iteration 2: f(x) = 26441.558482, Step size (lambda) = 0.026932
+ Iteration 3: f(x) = 26427.744703, Step size (lambda) = 0.026932
+ Iteration 4: f(x) = 26426.324085, Step size (lambda) = 0.026932
+ Iteration 5: f(x) = 26426.175886, Step size (lambda) = 0.026932
+ Iteration 6: f(x) = 26426.160887, Step size (lambda) = 0.026932
+ Iteration 7: f(x) = 26426.159255, Step size (lambda) = 0.026932
+ Iteration 8: f(x) = 26426.159081, Step size (lambda) = 0.026932
+Running GD with fixed step size:  0.005386488280020588
+ Iteration 1: f(x) = 26658.850655
+ Iteration 2: f(x) = 26463.956334
+ Iteration 3: f(x) = 26432.292974
+ Iteration 4: f(x) = 26427.154034
+ Iteration 5: f(x) = 26426.320259
+ Iteration 6: f(x) = 26426.184962
+ Iteration 7: f(x) = 26426.162943
+ Iteration 8: f(x) = 26426.159268
+ Iteration 9: f(x) = 26426.158778
+ Iteration 10: f(x) = 26426.158672
+============================================================
+L: 83.25414626299988
+Problem dimension: 100
+Alpha: 19.241878
+Beta: 0.741271
+
+
+================================================================================
+Sweep: running experiments for n in [600, 700, 1000]
+================================================================================
+Running n=600...
+
+============================================================
+n: 600, Alpha: 46.937938, Beta: 0.741271
+Running experiment for n=600...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 34906.794319, Step size (lambda) = 0.024589
+ Iteration 2: f(x) = 34731.054683, Step size (lambda) = 0.024589
+ Iteration 3: f(x) = 34713.105378, Step size (lambda) = 0.024589
+ Iteration 4: f(x) = 34711.266499, Step size (lambda) = 0.024589
+ Iteration 5: f(x) = 34711.076384, Step size (lambda) = 0.024589
+ Iteration 6: f(x) = 34711.057134, Step size (lambda) = 0.024589
+ Iteration 7: f(x) = 34711.054482, Step size (lambda) = 0.024589
+ Iteration 8: f(x) = 34711.054243, Step size (lambda) = 0.024589
+Running GD with fixed step size:  0.004917735080706075
+ Iteration 1: f(x) = 35035.826774
+ Iteration 2: f(x) = 34763.885000
+ Iteration 3: f(x) = 34719.617370
+ Iteration 4: f(x) = 34712.440613
+ Iteration 5: f(x) = 34711.278870
+ Iteration 6: f(x) = 34711.090748
+ Iteration 7: f(x) = 34711.060246
+ Iteration 8: f(x) = 34711.055293
+ Iteration 9: f(x) = 34711.054488
+ Iteration 10: f(x) = 34711.054356
+Running n=700...
+
+============================================================
+n: 700, Alpha: 50.692741, Beta: 0.741271
+Running experiment for n=700...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 43967.965299, Step size (lambda) = 0.022767
+ Iteration 2: f(x) = 43732.210629, Step size (lambda) = 0.022767
+ Iteration 3: f(x) = 43707.784540, Step size (lambda) = 0.022767
+ Iteration 4: f(x) = 43705.258115, Step size (lambda) = 0.022767
+ Iteration 5: f(x) = 43704.993891, Step size (lambda) = 0.022767
+ Iteration 6: f(x) = 43704.965996, Step size (lambda) = 0.022767
+ Iteration 7: f(x) = 43704.963112, Step size (lambda) = 0.022767
+ Iteration 8: f(x) = 43704.962796, Step size (lambda) = 0.022767
+ Iteration 9: f(x) = 43704.962762, Step size (lambda) = 0.022767
+Running GD with fixed step size:  0.004553312749928925
+ Iteration 1: f(x) = 44114.426356
+ Iteration 2: f(x) = 53610.725724
+ Iteration 3: f(x) = 43800.996199
+ Iteration 4: f(x) = 43720.669476
+ Iteration 5: f(x) = 43707.510808
+ Iteration 6: f(x) = 43705.374833
+ Iteration 7: f(x) = 43705.029030
+ Iteration 8: f(x) = 43704.973041
+ Iteration 9: f(x) = 43704.963964
+ Iteration 10: f(x) = 43704.962491
+ Iteration 11: f(x) = 43704.962132
+ Iteration 12: f(x) = 43704.962212
+Running n=1000...
+
+============================================================
+n: 1000, Alpha: 60.576449, Beta: 0.741271
+Running experiment for n=1000...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 74943.083304, Step size (lambda) = 0.019051
+ Iteration 2: f(x) = 74566.054035, Step size (lambda) = 0.019051
+ Iteration 3: f(x) = 74527.349312, Step size (lambda) = 0.019051
+ Iteration 4: f(x) = 74523.365526, Step size (lambda) = 0.019051
+ Iteration 5: f(x) = 74522.951501, Step size (lambda) = 0.019051
+ Iteration 6: f(x) = 74522.908157, Step size (lambda) = 0.019051
+ Iteration 7: f(x) = 74522.903590, Step size (lambda) = 0.019051
+ Iteration 8: f(x) = 74522.903105, Step size (lambda) = 0.019051
+ Iteration 9: f(x) = 74522.903053, Step size (lambda) = 0.019051
+Running GD with fixed step size:  0.003810139384658097
+ Iteration 1: f(x) = 75223.526765
+ Iteration 2: f(x) = 74637.161629
+ Iteration 3: f(x) = 74541.468575
+ Iteration 4: f(x) = 74525.915836
+ Iteration 5: f(x) = 74523.391713
+ Iteration 6: f(x) = 74522.981861
+ Iteration 7: f(x) = 74522.915226
+ Iteration 8: f(x) = 74522.904373
+ Iteration 9: f(x) = 74522.902602
+ Iteration 10: f(x) = 74522.902312
+
+L: 83.25414626299988
+
+================================================================================
+Sweep: running experiments for n in [500, 600, 700, 800, 900, 1000]
+================================================================================
+Running n=500...
+
+============================================================
+n: 500, Alpha: 42.855408, Beta: 0.741271
+Running experiment for n=500...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 26438.164252, Step size (lambda) = 0.010773
+ Iteration 2: f(x) = 26426.260380, Step size (lambda) = 0.010773
+ Iteration 3: f(x) = 26426.159524, Step size (lambda) = 0.010773
+ Iteration 4: f(x) = 26426.158671, Step size (lambda) = 0.010773
+ Iteration 5: f(x) = 26426.158664, Step size (lambda) = 0.010773
+Running GD with fixed step size:  0.005386488280020588
+ Iteration 1: f(x) = 26659.898559
+ Iteration 2: f(x) = 26464.113757
+ Iteration 3: f(x) = 26432.306985
+ Iteration 4: f(x) = 26427.153934
+ Iteration 5: f(x) = 26426.319791
+ Iteration 6: f(x) = 26426.184814
+ Iteration 7: f(x) = 26426.162912
+ Iteration 8: f(x) = 26426.159354
+ Iteration 9: f(x) = 26426.158681
+ Iteration 10: f(x) = 26426.158682
+Running n=600...
+
+============================================================
+n: 600, Alpha: 46.937938, Beta: 0.741271
+Running experiment for n=600...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 34726.508451, Step size (lambda) = 0.009835
+ Iteration 2: f(x) = 34711.185369, Step size (lambda) = 0.009835
+ Iteration 3: f(x) = 34711.055440, Step size (lambda) = 0.009835
+ Iteration 4: f(x) = 34711.054340, Step size (lambda) = 0.009835
+ Iteration 5: f(x) = 34711.054331, Step size (lambda) = 0.009835
+Running GD with fixed step size:  0.004917735080706075
+ Iteration 1: f(x) = 35040.535110
+ Iteration 2: f(x) = 34764.855694
+ Iteration 3: f(x) = 34719.801497
+ Iteration 4: f(x) = 34712.474461
+ Iteration 5: f(x) = 34711.285003
+ Iteration 6: f(x) = 34711.091848
+ Iteration 7: f(x) = 34711.060443
+ Iteration 8: f(x) = 34711.055328
+ Iteration 9: f(x) = 34711.054494
+ Iteration 10: f(x) = 34711.054357
+ Iteration 11: f(x) = 34711.054335
+Running n=700...
+
+============================================================
+n: 700, Alpha: 50.692741, Beta: 0.741271
+Running experiment for n=700...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 43726.172412, Step size (lambda) = 0.009107
+ Iteration 2: f(x) = 43705.143425, Step size (lambda) = 0.009107
+ Iteration 3: f(x) = 43704.963747, Step size (lambda) = 0.009107
+ Iteration 4: f(x) = 43704.962217, Step size (lambda) = 0.009107
+ Iteration 5: f(x) = 43704.962204, Step size (lambda) = 0.009107
+Running GD with fixed step size:  0.004553312749928925
+ Iteration 1: f(x) = 44115.008764
+ Iteration 2: f(x) = 43771.651561
+ Iteration 3: f(x) = 43715.779410
+ Iteration 4: f(x) = 43706.715535
+ Iteration 5: f(x) = 43705.246610
+ Iteration 6: f(x) = 53523.995389
+ Iteration 7: f(x) = 43799.266279
+ Iteration 8: f(x) = 43720.390376
+ Iteration 9: f(x) = 43707.467076
+ Iteration 10: f(x) = 43705.368062
+ Iteration 11: f(x) = 43705.027987
+ Iteration 12: f(x) = 43704.972881
+ Iteration 13: f(x) = 43704.963939
+ Iteration 14: f(x) = 43704.962487
+ Iteration 15: f(x) = 43704.962250
+ Iteration 16: f(x) = 43704.962212
+Running n=800...
+
+============================================================
+n: 800, Alpha: 54.187988, Beta: 0.741271
+Running experiment for n=800...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 53396.546173, Step size (lambda) = 0.008519
+ Iteration 2: f(x) = 53372.336118, Step size (lambda) = 0.008519
+ Iteration 3: f(x) = 53372.129243, Step size (lambda) = 0.008519
+ Iteration 4: f(x) = 53372.127478, Step size (lambda) = 0.008519
+ Iteration 5: f(x) = 53372.127462, Step size (lambda) = 0.008519
+Running GD with fixed step size:  0.004259497058216021
+ Iteration 1: f(x) = 53867.466169
+ Iteration 2: f(x) = 53452.802042
+ Iteration 3: f(x) = 53385.254005
+ Iteration 4: f(x) = 53374.263083
+ Iteration 5: f(x) = 53372.475244
+ Iteration 6: f(x) = 53372.184179
+ Iteration 7: f(x) = 53372.136727
+ Iteration 8: f(x) = 53372.128978
+ Iteration 9: f(x) = 53372.127711
+ Iteration 10: f(x) = 53372.127503
+ Iteration 11: f(x) = 53372.127469
+Running n=900...
+
+============================================================
+n: 900, Alpha: 57.471054, Beta: 0.741271
+Running experiment for n=900...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 63682.902698, Step size (lambda) = 0.008032
+ Iteration 2: f(x) = 63654.236602, Step size (lambda) = 0.008032
+ Iteration 3: f(x) = 63653.991761, Step size (lambda) = 0.008032
+ Iteration 4: f(x) = 63653.989673, Step size (lambda) = 0.008032
+ Iteration 5: f(x) = 63653.989513, Step size (lambda) = 0.008032
+ Iteration 6: f(x) = 63653.989656, Step size (lambda) = 0.008032
+ Iteration 7: f(x) = 63653.989513, Step size (lambda) = 0.007905
+ Iteration 8: f(x) = 63653.989655, Step size (lambda) = 0.007905
+ Iteration 9: f(x) = 63653.989513, Step size (lambda) = 0.007779
+ Iteration 10: f(x) = 63653.989656, Step size (lambda) = 0.007779
+ Iteration 11: f(x) = 63653.989656, Step size (lambda) = 0.007656
+Running GD with fixed step size:  0.004016085222794849
+ Iteration 1: f(x) = 64240.034514
+ Iteration 2: f(x) = 63749.551266
+ Iteration 3: f(x) = 63669.505690
+ Iteration 4: f(x) = 63656.505231
+ Iteration 5: f(x) = 63654.397654
+
+============================================================
+n: 1000, Alpha: 60.576449, Beta: 0.741271
+Running experiment for n=1000...
+Running GDA with backtracking line search:
+ Iteration 1: f(x) = 74556.425568, Step size (lambda) = 0.007620
+ Iteration 2: f(x) = 74523.188935, Step size (lambda) = 0.007620
+ Iteration 3: f(x) = 74522.904845, Step size (lambda) = 0.007620
+ Iteration 4: f(x) = 74522.902277, Step size (lambda) = 0.007620
+ Iteration 5: f(x) = 74522.902098, Step size (lambda) = 0.007620
+ Iteration 6: f(x) = 74522.902256, Step size (lambda) = 0.007620
+ Iteration 7: f(x) = 74522.902256, Step size (lambda) = 0.002594
+Running GD with fixed step size:  0.003810139384658097
+ Iteration 1: f(x) = 75226.455071
+ Iteration 2: f(x) = 74637.766587
+ Iteration 3: f(x) = 74541.593180
+ Iteration 4: f(x) = 74525.940678
+ Iteration 5: f(x) = 74523.396506
+ Iteration 6: f(x) = 74522.982766
+ Iteration 7: f(x) = 74522.915392
+ Iteration 8: f(x) = 74522.904403
+ Iteration 9: f(x) = 74522.902607
+ Iteration 10: f(x) = 74522.902313
+ Iteration 11: f(x) = 74522.902265
