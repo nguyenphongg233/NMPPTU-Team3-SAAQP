@@ -1,0 +1,72 @@
+\begin{frame}{\textbf{\large 2.3.1 Biến thể ngẫu nhiên SGDA}}
+    \textbf{1. Động lực}
+    Ứng dụng trong Học sâu quy mô lớn (Large-scale Deep Learning) nơi việc tính toán toàn bộ gradient $\nabla f(x)$ là bất khả thi.
+
+    \textbf{2. Bài toán Tối ưu Ngẫu nhiên:}
+    Thay vì tối thiểu hóa hàm mục tiêu xác định, ta xét bài toán kỳ vọng:
+    \begin{equation} \label{eq:stochastic_prob}
+         \min_{x} \mathbb{E}[f_{\xi}(x)].
+    \end{equation}
+    Trong đó:
+    \begin{itemize}
+        \item $x$: Biến quyết định (tham số mô hình).
+        \item $\xi$: Biến ngẫu nhiên với phân phối xác định.
+        \item $f_{\xi}(x)$: Hàm $L$-smooth đối với mỗi $\xi$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{\textbf{\large 2.3.1 Biến thể ngẫu nhiên SGDA}}
+    \textbf{3. Xấp xỉ Gradient}
+    Tại mỗi bước lặp $k$, thay vì tính $\nabla \Phi(x^k) = \mathbb{E}[\nabla f_{\xi}(x^k)]$, ta lấy mẫu:
+    \begin{itemize}
+        \item Lấy mẫu ngẫu nhiên $\xi$ tại mỗi lần lặp $k$. 
+        \item Tính gradient xấp xỉ: $\nabla f_{\xi^k}(x^k)$.
+    \end{itemize}
+
+    \textbf{4. Các thành phần trong Học máy:}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{c|l}
+            \textbf{Ký hiệu} & \textbf{Ý nghĩa thực tế} \\
+            \hline
+            $x$ & Trọng số mạng nơ-ron  \\
+            $\xi$ & Tính ngẫu nhiên của việc chọn dữ liệu \\
+            $f_{\xi}(x)$ & Hàm mất mát trên một batch dữ liệu \\
+            $\Phi(x)$ & Hàm mất mát tổng quát 
+        \end{tabular}
+    \end{table}
+    
+    \textit{*Lưu ý: Các phân tích lý thuyết chặt chẽ cho SGDA được dành cho nghiên cứu tương lai.}
+\end{frame}
+
+\begin{frame}[shrink]{\textbf{\large 2.3.2 Thuật toán Stochastic Gradient Descent (SGDA)}}
+\footnotesize
+\begin{algorithm}[H]
+\caption{(Stochastic Gradient Descent Algorithm-SGDA)}
+\begin{algorithmic}[1]
+
+\State \textbf{Input: $x^0 \in C$; $\lambda_0 > 0$; $\sigma, \kappa \in (0,1)$; $k=0$ }
+\State \textbf{Output: Stationary point $x^*$}
+\While{true}
+    \State Lấy mẫu ngẫu nhiên $\xi_k$
+
+    \State $   x_{k+1} \gets P_C\big(x_k - \lambda_k \nabla f_{\xi_k}(x_k)\big)  $
+    \If{$f_{\xi_k}(x_{k+1}) \le f_{\xi_k}(x_k)
+        - \sigma \langle \nabla f_{\xi_k}(x_k), x_k - x_{k+1} \rangle$}
+        \State
+        $    \lambda_{k+1} \gets \lambda_k $
+    \Else
+        \State
+        $
+            \lambda_{k+1} \gets \kappa \lambda_k
+        $
+    \EndIf
+    \If{$x_{k+1} = x_k$}
+        \State \textbf{break}
+    \EndIf
+    \State  $k \gets k + 1$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+\end{frame}

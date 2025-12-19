@@ -1,0 +1,125 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\usepackage{amsthm,amsmath,amssymb}
+\newtheorem{thm}{Định lý}
+\newtheorem{defn}{Định nghĩa}
+\renewcommand{\proofname}{\textbf{Chứng minh}}
+\renewcommand{\qedsymbol}{$\blacksquare$}      
+\usepackage{subcaption}
+\setbeamertemplate{theorems}[numbered]
+
+%% TYPESET
+\makeatletter
+\newcommand{\leqnomode}{\tagsleft@true}
+\newcommand{\reqnomode}{\tagsleft@false}
+\makeatother
+\let\Mathcal\mathcal
+\usepackage{dutchcal}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\gr}{\operatorname{gr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\toto}{\rightrightarrows}%
+\newcommand{\F}{\Mathcal{F}}%
+\newcommand{\K}{\mathbb{K}}%
+\newcommand{\R}{\mathbb{R}}%
+\def\C{\mathbb{C}}%
+\newcommand{\dom}{\operatorname{dom}}%
+% \newcommand{\ker}{\operatorname{ker}}% already defined
+\newcommand{\im}{\operatorname{im}}%
+\newcommand{\g}{\mathcal{g}}%
+\global\long\def\MP{\text{mp}}%
+
+\newcommand{\Image}[1]{%
+	\sbox0{\includegraphics[height=0.65\paperheight]{#1}}%
+	\ifdim\wd0 < \textwidth
+	\includegraphics[height=0.65\paperheight]{#1}%
+	\else
+	\includegraphics[width=\textwidth]{#1}%
+	\fi%
+}
+
+\newif\iffirsttoc
+\firsttoctrue
+\AtBeginSubsection[]
+{
+    \begin{frame}
+        \frametitle{\textbf{\large Nội dung}}  
+        \iffirsttoc
+            \tableofcontents
+            \global\firsttocfalse
+        \else
+            \tableofcontents[currentsection,
+            subsectionstyle=show/shaded/hide,
+            subsubsectionstyle=show/show/show/hide
+            ]
+        \fi
+    \end{frame} 
+}
+\setbeamertemplate{caption}[numbered]
+\usetheme{hust}
+% \titlegraphic{\includegraphics[height=\logoheight]{figures/sami-v2.pdf}}
+%\title{Seminar II:}
+% \subtitle{\textbf{\LARGE Tìm bán kính điều khiển có cấu trúc của hệ chịu\\đa nhiễu sử dụng các toán tử tuyến tính đa trị}}
+\title{\textbf{Self-adaptive algorithms for quasiconvex programming \\ and applications to machine learning }}
+
+\author{Nhóm 3}
+\date{Tháng 12, 2025}
+
+\begin{document}
+\begin{frame}[noframenumbering,Title]
+	\maketitle
+\end{frame}
+
+\begin{frame}{\textbf{\large Thành viên nhóm}}
+    \begin{large}   
+        \begin{enumerate}
+            \item Nguyễn Phong \hfill \makebox[4.5cm][l]{MSSV: 202400066}
+            \item Nguyễn Đăng Long \hfill \makebox[4.5cm][l]{MSSV: 202400057}
+            \item Phạm Gia Linh \hfill \makebox[4.5cm][l]{MSSV: 202416262}
+            \item Nguyễn Tuấn Long \hfill \makebox[4.5cm][l]{MSSV: 202416269}
+            \item Đoàn Đức Mạnh \hfill \makebox[4.5cm][l]{MSSV: 202400058}
+            \item Trần Đình Nam \hfill \makebox[4.5cm][l]{MSSV: 202400063}
+            \item Hoàng Thị Thu Phương \hfill \makebox[4.5cm][l]{MSSV: 202400068}
+            \item Đặng Bảo Quân \hfill \makebox[4.5cm][l]{MSSV: 202416319}
+            \item Phạm Thị Bích Phương \hfill \makebox[4.5cm][l]{MSSV: 202400069}
+            \item Dương Thanh Minh \hfill \makebox[4.5cm][l]{MSSV: 20230047}  
+            \item Nguyễn Hải Yến Nhi \hfill \makebox[4.5cm][l]{MSSV: 202400064}
+            \item Lương Đức Mạnh \hfill \makebox[4.5cm][l]{MSSV: 20235152}
+        \end{enumerate}
+    \end{large}
+\end{frame}
+
+
+\section{1 Kiến thức cần biết}
+\input{example.parts/Kiến thức cần biết}
+\section{2 Các kết quả chính}
+\input{example.parts/GDA}
+\section{3 Các thí nghiệm số}
+\input{example.parts/Ví dụ 1-2}
+\input{example.parts/Ví dụ 3-4.tex}
+
+\section{4 Applications to machine learning}
+\input{example.parts/Application_to_ML}
+\section{5 Tài liệu tham khảo}
+\begin{frame}[t]{\textbf{\large 5 Tài liệu tham khảo}}
+    \begin{itemize}
+        \item \url {https://github.com/nguyenphongg233/NMPPTU-Team3-SAAQP}
+        \item \url {https://www.overleaf.com/project/6925bea64fbe6a88cd865b51}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[c, plain] 
+    \centering 
+    
+    \Huge \color{hustred}{\textbf{Cảm ơn mọi người đã chú ý lắng nghe!}}
+    
+\end{frame}
+
+
+\end{document}

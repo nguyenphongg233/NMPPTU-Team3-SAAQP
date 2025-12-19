@@ -1,0 +1,111 @@
+\begin{frame}{\textbf{\large Nội dung phần Kiến thức cần biết}}
+    \vspace{-1cm}
+    \tableofcontents[
+        currentsection 
+    ]
+\end{frame}
+
+\subsection{1.1 Giả thiết và Bài toán}
+
+\begin{frame}[t]{\textbf{\large 1.1 Giả thiết và Bài toán}}
+    \begin{itemize}
+        \item Giả sử $C$ là một tập hợp \textbf{khác rỗng}, \textbf{đóng} và \textbf{lồi} trong $\mathbb{R}^m$.
+        \item Hàm $f : \mathbb{R}^m \to \mathbb{R}$ là một hàm khả vi trên một tập mở chứa $C$.
+        \item Ánh xạ $\nabla f$ là liên tục $L$-Lipschitz, tức là tồn tại $L > 0$ sao cho:
+        \[
+            \|\nabla f (\mathbf{x}) - \nabla f (\mathbf{y})\| \le L\|\mathbf{x} - \mathbf{y}\|, \quad \forall \mathbf{x}, \mathbf{y} \in C
+        \]
+    \end{itemize}
+
+    \pause
+    \vspace{0.5cm} 
+    
+    \textbf{Bài toán tối ưu:}
+    \[
+        \min_{\mathbf{x} \in C} f(\mathbf{x}), \quad \hypertarget{target:OP}{OP(f,C)}
+    \]
+\end{frame}
+
+\subsection{1.2 Phép chiếu lên tập lồi}
+
+\begin{frame}[t]{\textbf{\large 1.2 Phép chiếu lên tập lồi}}
+    \begin{itemize}
+        \item Giả sử tập nghiệm của $OP(f, C)$ là \textbf{không rỗng}.
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    Với $\mathbf{x} \in \mathbb{R}^m$, ký hiệu $P_C(\mathbf{x})$ là \textbf{phép chiếu} của $\mathbf{x}$ lên $C$:
+    \[
+        P_C(\mathbf{x}) := \arg\min\{\|\mathbf{z} - \mathbf{x}\| : \mathbf{z} \in C\}.
+    \]
+
+    \pause
+    \vspace{0.5cm}
+
+    \begin{block}{Mệnh đề 1 (Bauschke và Combettes 2011)}
+        Các khẳng định sau là đúng:
+        \begin{enumerate}
+            \item $\|P_C(\mathbf{x}) - P_C(\mathbf{y})\| \le \|\mathbf{x} - \mathbf{y}\|$ với mọi $\mathbf{x}, \mathbf{y} \in \mathbb{R}^m$.
+            \item $(\mathbf{y} - P_C(\mathbf{x}))^T(\mathbf{x} - P_C(\mathbf{x})) \le 0$ với mọi $\mathbf{x} \in \mathbb{R}^m, \mathbf{y} \in C$.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\subsection{1.3 Các định nghĩa và tính chất}
+
+\begin{frame}[t]{\textbf{\large 1.3.1 Các định nghĩa về tính lồi}}
+    \begin{defn}[Mangasarian 1965]
+        Hàm $f: \mathbb{R}^m \to \mathbb{R}$ được gọi là:
+        \begin{itemize}
+            \item<1-> \textbf{Lồi} (\textit{convex}) trên $C$ nếu $\forall \mathbf{x}, \mathbf{y} \in C, \lambda \in [0, 1]$:
+            \[
+                f(\lambda\mathbf{x} + (1 - \lambda)\mathbf{y}) \le \lambda f(\mathbf{x}) + (1 - \lambda)f(\mathbf{y}).
+            \]
+            \item<2-> \textbf{Giả lồi} (\textit{pseudoconvex}) trên $C$ nếu $\forall \mathbf{x}, \mathbf{y} \in C$:
+            \[
+                \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x}) \ge 0 \implies f(\mathbf{y}) \ge f(\mathbf{x}).
+            \]
+            \item<3-> \textbf{Tựa lồi} (\textit{quasiconvex}) trên $C$ nếu $\forall \mathbf{x}, \mathbf{y} \in C, \lambda \in [0, 1]$:
+            \[
+                f(\lambda\mathbf{x} + (1 - \lambda)\mathbf{y}) \le \max\{f(\mathbf{x}); f(\mathbf{y})\}.
+            \]
+        \end{itemize}
+    \end{defn}
+\end{frame}
+
+\begin{frame}[t]{\textbf{\large 1.3.2 Đặc trưng và Tính chất Lipschitz}}
+    \begin{block}{Mệnh đề 2: Đặc trưng tựa lồi}
+        Hàm khả vi $f$ là tựa lồi trên $C$ khi và chỉ khi:
+        \[
+            f(\mathbf{y}) \le f(\mathbf{x}) \Rightarrow \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x}) \le 0, \quad \forall \mathbf{x}, \mathbf{y} \in C.
+        \]
+    \end{block}
+    
+    \pause
+    
+    \begin{alertblock}{Mối quan hệ bao hàm}
+        Hàm lồi $\implies$ Hàm giả lồi $\implies$ Hàm tựa lồi
+    \end{alertblock}
+
+    \pause
+
+    \begin{block}{Mệnh đề 3: Tính chất Lipschitz}
+        Giả sử $\nabla f$ là liên tục $L$-Lipschitz trên $C$. Khi đó:
+        \[
+            |f(\mathbf{y}) - f(\mathbf{x}) - \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x})| \le \frac{L}{2} \|\mathbf{y} - \mathbf{x}\|^2.
+        \]
+    \end{block}
+\end{frame}
+
+\subsection{1.4 Bổ đề hỗ trợ chứng minh}
+
+\begin{frame}[t]{\textbf{\large 1.4 Bổ đề hỗ trợ chứng minh}}
+    \begin{lemma}[Xu 2002]
+        Cho $\{a_k\}$ và $\{b_k\}$ là các dãy số dương sao cho:
+        \[
+            a_{k+1} \le a_k + b_k \quad \forall k \ge 0 \quad \text{và} \quad \sum_{k=0}^\infty b_k < \infty.
+        \]
+        Khi đó, tồn tại giới hạn $\lim_{k \to \infty} a_k = c \in \mathbb{R}$.
+    \end{lemma}
+\end{frame}
