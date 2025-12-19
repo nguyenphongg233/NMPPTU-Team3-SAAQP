@@ -1,0 +1,265 @@
+% =================================================================
+% PHẦN 3.1: CÀI ĐẶT THỰC NGHIỆM & MỤC TIÊU 
+% =================================================================
+\begin{frame}{\textbf{\large  Cài đặt thực nghiệm \& Quy ước chung} }
+    \vspace*{-0.9cm} 
+    
+    % [FIX] Đưa phần Mục tiêu so sánh từ slide dưới lên đây
+    \begin{block}{\textbf{Mục tiêu}}
+        \small
+        Đánh giá hiệu quả của GDA thông qua đối sánh với các phương pháp:
+        \begin{itemize}
+            \item \textbf{Gradient Descent (GD)}: Cho \textbf{Bài toán Lồi} (Ví dụ 3).
+            \item \textbf{Neurodynamic (RNN)}: Cho \textbf{Bài toán Phi/Giả lồi} (Ví dụ 1, 2, 4).
+        \end{itemize}
+    \end{block}
+
+    \vspace{-0.2cm}
+    \begin{block}{\textbf{Quy ước \& Tiêu chí dừng}} 
+        \begin{itemize}
+            \item \textbf{Điều kiện dừng thuật toán:}
+            \begin{itemize}
+                \item Số vòng lặp đạt giới hạn tối đa ($\text{Iterations} \ge \#\text{Iter}$).
+                \item Hoặc khi \textbf{đạt điều kiện hội tụ} (Convergence condition met).
+            \end{itemize}
+            
+            \vspace{0.1cm}
+            \item \textbf{Các ký hiệu sử dụng:}
+            \begin{itemize}
+                \item $x^*$: Điểm giới hạn (nghiệm) của dãy lặp $\{x_k\}$.
+                \item \textbf{Time}: Thời gian CPU thực chạy (không tính thời gian khởi tạo).
+                \item \textbf{Value}: Giá trị hàm mục tiêu tại điểm dừng.
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\iffalse
+% =================================================================
+% PHẦN 3.2: CHI TIẾT THUẬT TOÁN ĐỐI SÁNH (CHỈ CÒN RNN)
+% =================================================================
+\begin{frame}{\textbf{\large Mô hình đối sánh: Thuật toán Neurodynamic (RNN)} }
+    \vspace*{-0.8cm} 
+    
+    % Slide này giờ rất thoáng, chỉ tập trung vào công thức toán
+    \begin{block}{\textbf{Cơ sở lý thuyết RNN}}
+        \small
+        Xét bài toán với tập ràng buộc tổng quát: $C = \{x \in \mathbb{R}^n \mid g(x) \le 0, Ax = b\}$.
+        \\
+        Mô hình RNN (Liu et al., 2022) giải bài toán trên dưới dạng bao hàm vi phân:
+        \vspace{-0.2cm} 
+        \begin{equation*}
+            \frac{d}{dt}x(t) \in -c(x(t))\nabla f(x(t)) - \partial \underbrace{P(x(t))}_{\text{Xử lý } g(x)} - \partial \underbrace{\|Ax(t) - b\|_1}_{\text{Xử lý } Ax=b}
+        \end{equation*}
+        
+        \vspace{-0.1cm} 
+        \begin{columns}[t]
+            \column{0.48\textwidth}
+            \centering
+            \textbf{Hàm phạt} $P(x)$:
+            \vspace{-0.2cm} 
+            $$ \sum_{i=1}^{m} \max\{0, g_i(x)\} $$
+            
+            \column{0.48\textwidth}
+            \centering
+            \textbf{Hàm điều chỉnh} $\Psi(s)$:
+            \vspace{-0.2cm} 
+            $$ \begin{cases} 1, & s > 0 \\ [0,1], & s = 0 \\ 0, & s < 0 \end{cases} $$
+        \end{columns}
+    \end{block}
+\end{frame}
+\fi
+% --- SLIDE 3.3: VÍ DỤ 1 - ĐỀ BÀI ---
+\subsection{3.1.1 Ví dụ 1}
+\begin{frame}{\textbf{\large 3.1 Ví dụ 1: Bài toán Phi lồi (Nonconvex)}}
+    \vspace*{-0.8cm} % Kéo nội dung lên sát header
+    
+    \begin{block}{\textbf{Mô hình bài toán}}
+        \small
+        Hàm mục tiêu phi lồi:
+        $$ \min f(x) = \frac{x_{1}^{2}+x_{2}^{2}+3}{1+2x_{1}+8x_{2}} $$
+        
+        Ràng buộc tập $C$:
+        $$ C = \{(x_1, x_2)^\top \in \mathbb{R}^2 \mid -x_1^2 - 2x_1x_2 \le -4, \ x_1, x_2 \ge 0\} $$
+    \end{block}
+
+    \begin{alertblock}{\textbf{Nhận xét}}
+        \small
+        Hàm $f$ là giả lồi (pseudoconvex) trên $C$. Mục tiêu là so sánh khả năng hội tụ về nghiệm tối ưu toàn cục so với RNN.
+    \end{alertblock}
+\end{frame}
+
+
+% --- SLIDE 3.1: VÍ DỤ 1 (ĐÃ THU GỌN & KÉO LÊN) ---
+\begin{frame}{\textbf{\large 3.1.2 Ví dụ 1: Kết quả thực nghiệm}}
+    \vspace*{-0.5cm} 
+    \begin{columns}[T]
+        % --- CỘT TRÁI ---
+        \column{0.45\textwidth}
+            \begin{block}{\textbf{Kết quả hội tụ}}
+                \small
+                \begin{itemize}
+                    \item Nghiệm tối ưu $x^*$:
+                    $$ (0.893870, 1.790527) $$
+                    \item Value (GDA): \textbf{0.409362} (Tốt hơn RNN: 0.4101).
+                \end{itemize}
+            \end{block}
+            
+            % [FIX] Kéo khối này lên sát phía trên bằng vspace âm
+            \vspace{-0.3cm} 
+            
+            \begin{alertblock}{\textbf{Đánh giá }}
+                % [FIX] Dùng font nhỏ hơn (footnotesize) và ép dòng sát lại
+                \footnotesize 
+                \setlength{\itemsep}{1pt} 
+                \begin{itemize}
+                    \item \textbf{Tính ổn định:} Quỹ đạo nghiệm hội tụ mượt, không nhạy với nhiễu.
+                    \item \textbf{Hiệu quả:} Cân bằng tốt giữa \textit{chất lượng nghiệm} và \textit{chi phí tính toán}.
+                \end{itemize}
+            \end{alertblock}
+
+        % --- CỘT PHẢI ---
+        \column{0.54\textwidth}
+            \vspace{-0.2cm} 
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{fig1.png}
+                \caption{Quỹ đạo nghiệm hội tụ}
+            \end{figure}
+    \end{columns}
+\end{frame}
+
+% --- SLIDE 3.3: BẢNG SỐ LIỆU VÍ DỤ 1 (ĐÃ SỬA LỖI CHỮ TO) ---
+\begin{frame}{\textbf{\large 3.1.3 Ví dụ 1: Thống kê chi tiết}}
+    \vspace*{-0.6cm} 
+    \textbf{Bảng 1: Kết quả các lần chạy (Results of Iterations)}
+    
+    \begin{table}[]
+        \centering
+        % [FIX] Dùng font nhỏ vừa phải, KHÔNG dùng resizebox để tránh bị phóng đại
+        \footnotesize 
+        \renewcommand{\arraystretch}{1.2} 
+        \setlength{\tabcolsep}{5pt} % Tăng khoảng cách cột cho thoáng
+        \begin{tabular}{|c|c|c|c|l|}
+        \hline
+        \textbf{\#} & \textbf{Time (s)} & \textbf{Iters} & \textbf{Value} & \multicolumn{1}{c|}{\textbf{$x^{*t}$}} \\ \hline
+        1 & 1.489085 & \textbf{28} & 0.409364 & [0.894247, 1.789397] \\
+        2 & 1.235719 & 32 & \textbf{0.409362} & [0.893870, 1.790527] \\
+        3 & 1.082686 & 31 & 0.409363 & [0.893946, 1.790301] \\
+        4 & \textbf{1.047740} & 31 & 0.409363 & [0.894092, 1.789862] \\
+        5 & 1.440842 & 32 & 0.409364 & [0.894284, 1.789285] \\
+        6 & 1.139069 & 30 & 0.409367 & [0.895131, 1.786744] \\
+        7 & 1.126395 & 32 & 0.409363 & [0.894047, 1.789995] \\
+        8 & 1.564762 & 33 & 0.409363 & [0.893926, 1.790359] \\
+        9 & 2.008716 & 33 & 0.409363 & [0.893998, 1.790141] \\
+        10 & 1.510566 & 32 & \textbf{0.409362} & [0.893911, 1.790403] \\ \hline
+        \end{tabular}
+    \end{table}
+    
+    \footnotesize \centering
+    \textit{ Dữ liệu thực nghiệm 10 lần chạy đầu tiên}
+\end{frame}
+
+
+% --- SLIDE 3.6: VÍ DỤ 2 - ĐỀ BÀI ---
+\subsection{3.2 Ví dụ 2}
+\begin{frame}{\textbf{\large 3.2.1 Ví dụ 2: Bài toán Giả lồi không trơn}}
+    \vspace*{-0.8cm} % Kéo nội dung lên
+    \small 
+    \textbf{Hàm mục tiêu (Không trơn):}
+    \begin{equation*}
+        \min f(x) = \frac{e^{|x_2 - 3|} - 30}{x_1^2 + x_3^2 + 2x_4^2 + 4}
+    \end{equation*}
+    
+    \vspace{-0.2cm}
+    \textbf{Hệ ràng buộc phức tạp:}
+    \vspace{-0.3cm}
+    \begin{align*}
+        g_1(x) &= (x_1 + x_3)^3 + 2x_4^2 \le 10 \\
+        g_2(x) &= (x_2 - 1)^2 \le 1, \quad h(x) = 2x_1 + 4x_2 + x_3 = -1
+    \end{align*}
+
+    \textbf{Xử lý đạo hàm tại điểm không trơn:}
+    \vspace{-0.2cm}
+    $$ \nabla |x_2 - 3| = \frac{x_2 - 3}{|x_2 - 3|} \quad (\text{với } x_2 \neq 3) $$
+    
+    \textbf{Kết quả mong đợi:} Tìm được nghiệm tốt hơn so với RNN (vốn hay bị kẹt ở cực tiểu địa phương đối với hàm không trơn).
+\end{frame}
+
+% --- SLIDE 3.4: VÍ DỤ 2 (ĐÃ SỬA LỖI ĐÁNH GIÁ + VECTOR 1 DÒNG) ---
+\begin{frame}{\textbf{\large 3.2.2 Ví dụ 2: Kết quả thực nghiệm}}
+    \vspace*{-0.5cm} 
+    \begin{columns}[T]
+        % --- CỘT TRÁI (48%) ---
+        \column{0.48\textwidth}
+            \begin{block}{\textbf{Kết quả hội tụ}}
+                \footnotesize 
+                \begin{itemize}
+                    \item Nghiệm tối ưu $x^*$:
+                    % [FIX] Ép vector dài nằm gọn trên 1 dòng
+                    \resizebox{0.95\linewidth}{!}{
+                        $ (-1.069016, 0.417647, -0.532558, 0.000022)^\top $
+                    }
+                    
+                    \item Value (GDA): \textbf{-3.090767}.
+                    \item Value (RNN): -3.0849.
+                \end{itemize}
+            \end{block}
+            
+            % [FIX] Kéo khối đánh giá lên sát phía trên
+            \vspace{-0.3cm}
+            
+            % [CONTENT] Nội dung lấy từ Report Page 13
+            \begin{alertblock}{\textbf{Đánh giá }}
+                \scriptsize % Font nhỏ gọn để không bị tràn
+                \setlength{\itemsep}{2pt} % Giãn dòng nhẹ cho dễ đọc
+                \begin{itemize}
+                    \item \textbf{Tính ổn định:} Hội tụ về cùng một nghiệm tối ưu bất kể điểm khởi tạo ban đầu khác nhau.
+                    \item \textbf{Hiệu quả:} GDA vượt trội RNN cả về \textbf{độ chính xác}, \textbf{thời gian tính toán} và cấu trúc đơn giản hơn.
+                \end{itemize}
+            \end{alertblock}
+
+        % --- CỘT PHẢI (50%) ---
+        \column{0.50\textwidth}
+            \vspace{-0.2cm}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{fig2.png}
+                \caption{Sự hội tụ đồng nhất của 4 biến số}
+            \end{figure}
+    \end{columns}
+\end{frame}
+% --- SLIDE 3.2: BẢNG 2 (ĐÃ IN ĐẬM GIÁ TRỊ TỐI ƯU) ---
+\begin{frame}{\textbf{\large 3.2.3 Ví dụ 2: Thống kê kết quả}}
+    \vspace*{-0.8cm} % Kéo nội dung lên cao
+    \centering
+    \textbf{Bảng 2: Kết quả tối ưu (Optimization Results)}
+    
+    \vspace{0.2cm} % Khoảng cách giữa tiêu đề và bảng
+    
+    % [FIX] Bỏ môi trường 'table', dùng trực tiếp makebox để căn giữa bảng to
+    \makebox[\textwidth][c]{
+        \footnotesize % [FIX] Tăng cỡ chữ lên \footnotesize cho to bằng Bảng 1
+        \renewcommand{\arraystretch}{1.25} % [FIX] Giãn dòng 1.25 cho thoáng
+        \setlength{\tabcolsep}{3pt} % Khoảng cách cột vừa phải
+        
+        \begin{tabular}{|c|c|c|c|l|}
+        \hline
+        \textbf{\#} & \textbf{Time (s)} & \textbf{Iters} & \textbf{Value} & \multicolumn{1}{c|}{\textbf{$x^{*t}$}} \\ \hline
+        1 & 3.125859 & 38 & \textbf{-3.090767} & [-1.069016, 0.417647, -0.532558, 0.000022] \\
+        2 & 3.376504 & 42 & \textbf{-3.090767} & [-1.069795, 0.417966, -0.532273, 0.000000] \\
+        3 & 3.359701 & 41 & \textbf{-3.090767} & [-1.069610, 0.417896, -0.532363, 0.000014] \\
+        4 & 3.596762 & 44 & \textbf{-3.090767} & [-1.069956, 0.418058, -0.532320, 0.000005] \\
+        5 & 3.124562 & 41 & \textbf{-3.090767} & [-1.069584, 0.417901, -0.532434, 0.000007] \\
+        6 & 3.700269 & 47 & \textbf{-3.090767} & [-1.070102, 0.418157, -0.532424, 0.000004] \\
+        7 & 3.406564 & 44 & \textbf{-3.090767} & [-1.069881, 0.418059, -0.532475, 0.000001] \\
+        8 & \textbf{2.954161} & \textbf{37} & -3.090768 & [-1.067557, 0.417538, -0.535037, 0.000020] \\
+        9 & 3.307867 & 47 & \textbf{-3.090767} & [-1.070151, 0.418162, -0.532345, 0.000000] \\
+        10 & 3.687243 & 44 & \textbf{-3.090767} & [-1.069958, 0.418055, -0.532303, 0.000009] \\ \hline
+        \end{tabular}
+    }
+    
+    \vspace{0.2cm} % [FIX] Đẩy dòng ghi chú xuống dưới, không bị đè lên bảng
+    \footnotesize 
+    \textit{Giá trị hàm mục tiêu hội tụ ổn định}
+\end{frame}

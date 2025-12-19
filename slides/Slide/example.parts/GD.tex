@@ -1,0 +1,73 @@
+\begin{frame}[shrink]{\textbf{\large 2.2.1 Thuật toán Gradient Descent - GD}}
+\footnotesize
+\begin{algorithm}[H]
+\caption{(Gradient Descent Algorithm-GD)}
+\begin{algorithmic}[1]
+
+\State \textbf{Input: $x^0 \in C$; $\lambda_0 \in (0, 2/L)$; $k=0$ }
+\State \textbf{Output: Stationary point $x^*$}
+
+\While{true}
+    \State $x^{k+1} \gets P_C\big(x^k - \lambda_k \nabla f(x^k)\big)$
+    \If{$x^{k+1} = x^k$}
+        \State \textbf{break}
+    \EndIf
+
+    \State $k \gets k + 1$
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.2.2 Hệ quả}}
+    \begin{exampleblock}{Hệ quả 1: }
+        Giả sử $f$ lồi, $C = \mathbb{R}^m$ và $\{x^k\}$ là dãy được sinh ra bởi thuật toán GDA. Khi đó,
+        $$f(x^k) - f(x^*) = O\left(\frac{1}{k}\right).$$
+        với $x^*$ là nghiệm tối ưu của bài toán.
+    \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}{\textbf{\large 2.2.3 Chứng minh hệ quả 1}}
+    \textbf{1. Thiết lập bài toán:}
+    Gọi $x^*$ là nghiệm tối ưu. Đặt $\Delta_k := f(x^k) - f(x^*) \ge 0$.
+
+    \textbf{2. Các đánh giá cơ bản:}
+    Từ (\ref{eq:4}) kết hợp $x^k-x^{k+1} = \lambda_k \nabla \ f(x^k)$, ta có:
+    \begin{equation} \label{eq:rate_1}
+        \Delta_{k+1} \le \Delta_k - \sigma \lambda \|\nabla f(x^k)\|^2, \quad \forall k \ge k_1
+    \end{equation}
+
+    Do dãy $\{ x^k\}$ bị chặn và $f$ lồi nên :
+    \begin{equation} \label{eq:rate_2}
+    \begin{split}
+        \Delta_k &\le \langle \nabla f(x^k), x^k - x^* \rangle \\
+                 &\le \underbrace{\|x^k - x^*\|}_{\le M} \|\nabla f(x^k)\| \implies \|\nabla f(x^k)\| \ge \frac{\Delta_k}{M}
+    \end{split}
+\end{equation}
+trong đó $M := \sup \{ \|x^k - x^*\| : k \ge k_1 \} < \infty$.
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.2.3 Chứng minh hệ quả 1}}
+    \textbf{3. Bất đẳng thức truy hồi:}
+    
+    Thay (\ref{eq:rate_2}) vào (\ref{eq:rate_1}), đặt $Q := \frac{\sigma \lambda}{M^2}$:
+    \begin{equation} \label{eq:rate_3}
+        \Delta_{k+1} \le \Delta_k - \sigma \lambda \frac{\Delta_k^2}{M^2} = \Delta_k - Q \Delta_k^2
+    \end{equation}
+
+    \textbf{4. Đánh giá tốc độ:}
+    Vì $\Delta_{k+1} \le \Delta_k$, chia hai vế (\ref{eq:rate_3}) cho $\Delta_k \Delta_{k+1}$:
+    \begin{align*}
+        \frac{1}{\Delta_{k+1}} \ge \frac{1}{\Delta_k} + Q \frac{\Delta_k}{\Delta_{k+1}} \ge \frac{1}{\Delta_k} + Q 
+        &\implies \frac{1}{\Delta_k} \ge \frac{1}{\Delta_{k_1}} + (k - k_1)Q \\
+        &\implies \Delta_k \le \frac{1}{(k - k_1)Q}
+    \end{align*}
+
+    \textbf{Kết luận:} $$ f(x^k) - f(x^*) = O\left(\frac{1}{k}\right).$$
+\end{frame}
+\subsection{2.3 Biến thể ngẫu nhiên của thuật toán GDA - Stochastic GDA}
+\input{example.parts/SGDA}
+
+

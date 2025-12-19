@@ -1,0 +1,149 @@
+
+\subsection{2.1 Thuật toán Gradient Descent Adaptive - GDA}
+\begin{frame}[shrink]{\textbf{\large 2.1.1 Thuật toán Gradient Descent Adaptive - GDA}}
+\footnotesize
+\begin{algorithm}[H]
+\caption{(Gradient Descent Adaptive Algorithm-GDA)}
+\begin{algorithmic}[1]
+
+\State \textbf{Input: $x^0 \in C$; $\lambda_0 > 0$; $\sigma, \kappa \in (0,1)$; $k=0$ }
+\State \textbf{Output: Stationary point $x^*$}
+
+\While{true}
+    \State $x^{k+1} \gets P_C\big(x^k - \lambda_k \nabla f(x^k)\big)$
+
+    \If{$f(x^{k+1}) \le f(x^k) - \sigma \langle \nabla f(x^k), x^k - x^{k+1} \rangle$}
+        \State $\lambda_{k+1} \gets \lambda_k$
+    \Else
+        \State $\lambda_{k+1} \gets \kappa \lambda_k$
+    \EndIf
+
+    \If{$x^{k+1} = x^k$}
+        \State \textbf{break}
+    \EndIf
+
+    \State $k \gets k + 1$
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm}
+    
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.1.2 Nhận xét}}
+    \begin{exampleblock}{Nhận xét 1}
+        Nếu thuật toán GDA dừng tại bước $k$, thì $\mathbf{x}^k$ là một điểm dừng của bài toán $OP(f,C)$.
+    \end{exampleblock}
+    \pause
+    \begin{block}{Chứng minh:} Do $\mathbf{x}^{k+1} = P_C(\mathbf{x}^k - \lambda_k \nabla f(\mathbf{x}^k))$, áp dụng Mệnh đề 1-(ii), ta có:
+    \begin{equation} \label{eq:1}
+        \langle \mathbf{z} - \mathbf{x}^{k+1} ,  \mathbf{x}^k - \lambda_k \nabla f(\mathbf{x}^k) - \mathbf{x}^{k+1} \rangle  \le 0, \quad \forall \mathbf{z} \in C
+    \end{equation}
+    \pause
+        Nếu $\mathbf{x}^{k+1} = \mathbf{x}^k$, ta thu được:
+    \begin{equation} \label{eq:2}
+        \langle \nabla f(\mathbf{x}^k), \mathbf{z} - \mathbf{x}^k \rangle \ge 0, \quad \forall \mathbf{z} \in C
+    \end{equation}
+    \pause
+        Khi đó $\mathbf{x}^k$ là một điểm dừng của bài toán.
+    \end{block}  %Hơn nữa, nếu $f$ là hàm giả lồi, từ (\ref{eq:2}) suy ra $f(\mathbf{z}) \ge f(\mathbf{x}^k)$ với mọi $\mathbf{z} \in C$, hay $\mathbf{x}^k$ là một nghiệm của $OP(f, C)$.
+    
+    %Giả sử thuật toán sinh ra một dãy vô hạn. Chúng ta sẽ chứng minh rằng dãy này hội tụ về một nghiệm của bài toán \hyperlink{target:OP}{OP($f, C$)}.
+\end{frame}
+
+
+
+\begin{frame}{\textbf{\large 2.1.3 Định lý về sự hội tụ của dãy}}
+    \begin{thm}
+        Giả sử dãy $\{\mathbf{x}^k\}$ được sinh bởi Thuật toán GDA. Khi đó, dãy $\{f(\mathbf{x}^k)\}$ hội tụ và mỗi điểm giới hạn (nếu có) của dãy $\{\mathbf{x}^k\}$ là một điểm dừng của bài toán.
+        Hơn nữa:
+        \begin{itemize}
+            \item Nếu $f$ là hàm gần lồi trên $C$, thì dãy $\{\mathbf{x}^k\}$ hội tụ về một điểm dừng của bài toán.
+            \item Nếu $f$ là hàm giả lồi trên $C$, thì dãy $\{\mathbf{x}^k\}$ hội tụ về một nghiệm của bài toán.
+        \end{itemize}
+    \end{thm}
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.1.4 Chứng minh định lý 1}}
+    \textbf{1. Bất đẳng thức cơ bản:}
+    
+    Kết hợp tính chất $L$-Lipschitz và tính chất của phép chiếu $P_C$:
+    \begin{equation*}
+        \begin{cases}
+             f(\mathbf{x}^{k+1}) \le f(\mathbf{x}^k) + \langle \nabla f(\mathbf{x}^k), \mathbf{x}^{k+1} - \mathbf{x}^k \rangle + \frac{L}{2} \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2 \\
+             \langle \nabla f(\mathbf{x}^k), \mathbf{x}^{k+1} - \mathbf{x}^k \rangle \le -\frac{1}{\lambda_k} \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2
+        \end{cases}
+    \end{equation*}
+
+    \pause
+    $\implies$ Ta thu được đánh giá quan trọng:
+    \begin{equation} \label{eq:main_descent}
+        \boxed{ f(\mathbf{x}^{k+1}) \le f(\mathbf{x}^k) - \sigma \langle \nabla f(\mathbf{x}^k),\mathbf{x}^k - \mathbf{x}^{k+1} \rangle - \left( \frac{1-\sigma}{\lambda_k} - \frac{L}{2} \right) \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2 }
+    \end{equation}
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.1.4 Chứng minh đinh lý 1}}
+    \textbf{2. Sự hội tụ: }
+    
+    Giả sử $\lambda_k \to 0$, khi đó tồn tại $k_0 \in \mathbb{N}$ thỏa mãn
+    \begin{equation} \label{eq:4}
+        f(\mathbf{x}^{k+1}) \le f(\mathbf{x}^k) - \sigma \langle \nabla f(\mathbf{x}^k), \mathbf{x}^k-\mathbf{x}^{k+1} \rangle \quad \forall k \ge k_0. 
+    \end{equation}
+    
+    Theo cách xây dựng $k_0$, bước nhảy không suy biến về 0:
+    $$ \exists k_1: \lambda_k = \lambda_{k_1} = \bar{\lambda} > 0, \quad \forall k \ge k_1. $$ và thỏa mãn (\ref{eq:4})
+    
+    Từ $\langle \nabla f(\mathbf{x}^k),\mathbf{x}^k - \mathbf{x}^{k+1} \rangle \ge 0$ ta suy ra {$f(x^k)$} hội tụ và:
+    $$ \sum_{k=0}^{\infty} \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2 < \infty $$
+    \begin{equation} \label{eq:5}
+        \implies \lim_{k \to \infty} \|\mathbf{x}^{k+1} - \mathbf{x}^k\| = 0.
+    \end{equation}
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.1.4 Chứng minh đinh lý 1}}
+    \textbf{3. Điểm dừng: }
+    
+    Từ tính chất phép chiếu với mọi $\mathbf{z} \in C$:
+    \begin{equation} \label{eq:6}
+        \|\mathbf{x}^{k+1} - \mathbf{z}\|^2 \le \|\mathbf{x}^k - \mathbf{z}\|^2 - \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2 + 2\lambda_k \langle \nabla f(\mathbf{x}^k), \mathbf{z} - \mathbf{x}^{k+1} \rangle
+    \end{equation}
+    
+    Xét dãy con $\mathbf{x}^{k_i} \to \bar{\mathbf{x}}$. Cho $i \to \infty$, sử dụng (\ref{eq:5}) và tính liên tục của $\nabla f$:
+    \begin{equation}
+         \langle \nabla f(\bar{\mathbf{x}}), \mathbf{z} - \bar{\mathbf{x}} \rangle \ge 0, \quad \forall \mathbf{z} \in C.
+    \end{equation}
+    $\implies \bar{\mathbf{x}}$ là một \textbf{điểm dừng} của bài toán.
+\end{frame}
+
+\begin{frame}{\textbf{\large 2.1.4 Chứng minh đinh lý 1}}
+    \textbf{4. Trường hợp $f$ Gần lồi / Giả lồi: }
+    
+    Đặt $U := \{\mathbf{x} \in C : f(\mathbf{x}) \le f(\mathbf{x}^k), \forall k\}$. Với mọi $\hat{\mathbf{x}} \in U$:
+    $$ \langle \nabla f(\mathbf{x}^k), \hat{\mathbf{x}} - \mathbf{x}^k \rangle \le 0 $$
+    kết hợp (\ref{eq:6}) ta thu được:
+    \begin{equation*}
+        \|\mathbf{x}^{k+1} - \hat{\mathbf{x}}\|^2 \le \|\mathbf{x}^k - \hat{\mathbf{x}}\|^2 - \|\mathbf{x}^{k+1} - \mathbf{x}^k\|^2 + 2\lambda_k \langle \nabla f(\mathbf{x}^k), \mathbf{x}^k - \mathbf{x}^{k+1} \rangle
+    \end{equation*}
+    Áp dụng \textbf{Bổ đề 1} với $a_k = \|\mathbf{x}^{k+1} - \hat{\mathbf{x}}\|^2$ và $b_k = 2\lambda_k \nabla f(\mathbf{x}^k)^T (\mathbf{x}^k - \mathbf{x}^{k+1})$:
+    $\implies \exists \lim_{k \to \infty} \|\mathbf{x}^k - \hat{\mathbf{x}}\| = 0$ .
+    
+    $\implies$ Dãy $\{\mathbf{x}^k\}$ hội tụ duy nhất về $\bar{\mathbf{x}}$.
+    
+   \textbf{Kết luận:} Dãy $\{\mathbf{x}^k\}$ hội tụ duy nhất về điểm dừng $\bar{\mathbf{x}}$. Nếu $f$ giả lồi, $\bar{\mathbf{x}}$ là \textbf{nghiệm tối ưu}. \qed
+\end{frame}
+\begin{frame}{\textbf{\large 2.1.5 Nhận xét}}
+    \begin{exampleblock}{Nhận xét 2}
+        \begin{itemize}
+            \item Trong Thuật toán GDA, ta có thể chọn $\lambda_0 = \lambda$, với hằng số $\lambda \le 2(1 - \sigma)/L$. Thuật toán GDA áp dụng được cho bước nhảy hằng số $\lambda \le 2(1 - \sigma)/L$.
+            \pause
+            \item  Nếu giá trị hằng số Lipschitz $L$ được biết trước, ta có thể chọn bước nhảy hằng số $\lambda \in (0, 2/L)$ như trong thuật toán gradient descent (GD) để giải các bài toán quy hoạch lồi.
+        \end{itemize}
+    \end{exampleblock}
+    
+\end{frame}
+
+
+\subsection{2.2 Thuật toán Gradient Descent - GD}
+\input{example.parts/GD}
+
+

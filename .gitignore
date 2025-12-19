@@ -1,0 +1,32 @@
+# Python cache and build
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter and notebook
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment/venv
+.venv/
+venv/
+ENV/
+
+# Logs
+*.log
+
+# Misc
+*.bak
+*.tmp
+*.swp

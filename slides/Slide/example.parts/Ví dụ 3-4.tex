@@ -1,0 +1,159 @@
+\subsection*{Ví dụ 3}
+
+\begin{frame}{\textbf{\large 3.3.1 Ví dụ 3: Bài toán giả lồi trơn}}
+Cho $e := (1,\ldots,n) \in \mathbb{R}^n$, với $\alpha>0$, $\beta>0$ thỏa mãn
+\[
+2\alpha > 3\beta^{3/2}\sqrt{n}.
+\]
+
+Xét bài toán tối ưu $\mathrm{OP}(f,C)$ (Ví dụ 4.5 trong Ferreira và Sosa, 2022) với
+\[
+f(x) := a^\top x + \alpha x^\top x
++ \frac{\beta}{\sqrt{1+\beta x^\top x}}\, e^\top x.
+\]
+
+\[
+C = \left\{ x \in \mathbb{R}_{++}^n : x_1 x_2 \cdots x_n \ge 1 \right\}.
+\]
+\end{frame}
+
+\begin{frame}{\textbf{\large 3.3.2 Thiết lập tham số và thuật toán}}
+\[
+\beta = 0.741271, \qquad
+\alpha = 3\beta^{3/2}\sqrt{n+1}.
+\]
+
+\[
+L = 4\beta^{3/2}\sqrt{n} + 3\alpha.
+\]
+
+\textbf{So sánh hai phương pháp:}
+\begin{itemize}
+\item \textbf{GD:} $\lambda = 1/L$.
+\item \textbf{GDA:} $\lambda_0 = 5/L$, điều chỉnh thích nghi.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\textbf{\large 3.3.3 Kết quả thực nghiệm}}
+\scriptsize
+\begin{table}
+\centering
+\begin{tabular}{|r|rrr||rrr|}
+\hline
+$n$ & \multicolumn{3}{c||}{GDA} & \multicolumn{3}{c|}{GD} \\ \cline{2-7}
+ & $f(x^*)$ & \#Iter & Time(s)
+ & $f(x^*)$ & \#Iter & Time(s) \\
+\hline
+10   & 80.080578 & 6 & 0.5927 & 80.080615 & 6 & 0.2399 \\
+20   & 219.714476 & 6 & 2.2912 & 219.714478 & 7 & 0.9540 \\
+50   & 851.700044 & 7 & 3.3230 & 851.700047 & 8 & 2.6453 \\
+100  & 2390.314066 & 7 & 11.9520 & 2390.314086 & 8 & 12.3069 \\
+200  & 6721.095888 & 8 & 71.6870 & 6721.095916 & 9 & 64.0119 \\
+600  & 34711.054243 & 8 & 932.1330 & 34711.054356 & 10 & 529.1590 \\
+\hline
+\end{tabular}
+\caption{So sánh GDA và GD}
+\end{table}
+\end{frame}
+
+\begin{frame}{\textbf{\large 3.3.4 Nhận xét}}
+\begin{itemize}
+    \item GDA và GD cho giá trị hàm mục tiêu tối ưu gần như tương đương.
+    \item GDA thường hội tụ với ít vòng lặp hơn so với GD.
+    \item Hiệu quả của GDA thể hiện rõ hơn khi kích thước bài toán tăng.
+    \item Cơ chế bước học thích nghi giúp GDA cải thiện hiệu suất tính toán.
+\end{itemize}
+\end{frame}
+
+
+
+
+% ==========================
+\subsection*{Ví dụ 4}
+
+
+\begin{frame}{\textbf{\large 3.4.1 Ví dụ 4: Bài toán tối ưu giả lồi trơn với các ràng buộc lồi}}
+Xét bài toán $\mathrm{OP}(f,C)$ với hàm mục tiêu
+\[
+f(x) = -\exp\!\left(-\sum_{i=1}^n \frac{x_i^2}{e_i^2}\right),
+\]
+trong đó $x\in\mathbb{R}^n$, $e=(e_1,\ldots,e_n)^\top$, $e_i>0$.
+
+Hàm $f$ là giả lồi trên miền ràng buộc lồi
+\[
+C := \{ Ax=b,\; g(x)\le0 \}.
+\]
+\end{frame}
+
+% ==========================
+\begin{frame}{\textbf{\large 3.4.2 Cấu trúc ràng buộc}}
+Ma trận $A=(a_1,\ldots,a_n)\in\mathbb{R}^{1\times n}$ được xác định bởi
+\[
+a_i=
+\begin{cases}
+1, & 1\le i\le n/2,\\
+3, & n/2 < i \le n,
+\end{cases}
+\qquad
+b=16.
+\]
+
+Các ràng buộc bất đẳng thức:
+\[
+g_i(x)=\sum_{j=1}^{10} x_{10(i-1)+j}^2 - 20,
+\qquad i=1,2,\ldots,\frac{n}{10}.
+\]
+\end{frame}
+
+% ==========================
+\begin{frame}{\textbf{\large 3.4.3 Thiết lập so sánh thuật toán}}
+So sánh hai phương pháp:
+\begin{itemize}
+\item \textbf{GDA}: thuật toán đề xuất.
+\item \textbf{RNN}: thuật toán của Liu et al.\ (2022).
+\end{itemize}
+
+Chỉ số đánh giá được sử dụng:
+\[
+-\ln(-f(x^*)),
+\]
+trong đó $x^*$ là nghiệm gần đúng thu được từ mỗi thuật toán.
+
+Hàm $-\ln(-z)$ là đơn điệu tăng với mọi $z<0$.
+\end{frame}
+
+% ==========================
+\begin{frame}{\textbf{\large 3.4.4 Kết quả thực nghiệm}}
+\scriptsize
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+$n$ & \multicolumn{3}{c|}{GDA} & \multicolumn{3}{c|}{RNN} \\ \cline{2-7}
+ & $-\ln(-f(x^*))$ & \#Iter & Time
+ & $-\ln(-f(x^*))$ & \#Iter & Time \\
+\hline
+10  & 5.1200 & 50 & 0.54 & 5.2014 & 10000 & 1123 \\
+20  & 2.5600 & 50 & 231.4 & 2.9004 & 10000 & 1264 \\
+30  & 1.7066 & 50 & 312 & 5.2014 & 10000 & 1123 \\
+40  & 1.2800 & 50 & 309.2 & 6.5283 & 10000 & 1634 \\
+50  & 1.0240 & 50 & 261.6 & 1.4141 & 10000 & 1367 \\
+60  & 0.8533 & 50 & 348.5 & 1.4141 & 10000 & 1367 \\
+70  & 0.7314 & 500 & 78.4 & 11.1273 & 10000 & 1443.2 \\
+\hline
+\end{tabular}
+\caption{Kết quả tính toán cho Ví dụ 4}
+\end{table}
+\end{frame}
+
+% ==========================
+\begin{frame}{\textbf{\large 3.4.5 Nhận xét}}
+\begin{itemize}
+\item GDA cho \textbf{giá trị tối ưu gần đúng tốt hơn} so với RNN.
+\item GDA hội tụ với \textbf{số vòng lặp ít hơn đáng kể}.
+\item \textbf{Thời gian tính toán thấp hơn nhiều}, đặc biệt khi $n$ lớn.
+\end{itemize}
+
+Kết quả cho thấy GDA vượt trội hơn RNN trong các bài toán giả lồi
+kích thước lớn.
+\end{frame}

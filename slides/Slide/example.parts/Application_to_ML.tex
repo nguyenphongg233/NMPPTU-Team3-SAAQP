@@ -1,0 +1,258 @@
+\begin{frame}[t]{\textbf{\large 4. Ứng dụng trong Học máy (Machine Learning)}}
+	\begin{block}{Mục tiêu nghiên cứu}
+		Phương pháp được đề xuất, giống như thuật toán GD, có nhiều ứng dụng trong học máy. Chúng tôi phân tích ba ứng dụng phổ biến để chứng minh độ chính xác và hiệu quả tính toán so với các phương pháp thay thế khác:
+	\end{block}
+	
+	\vspace{0.5cm}
+	\begin{enumerate}
+		\item \textbf{Lựa chọn đặc trưng có giám sát} (Supervised feature selection).
+		\item \textbf{Hồi quy Logistic} (Regression).
+		\item \textbf{Phân loại} (Classification).
+	\end{enumerate}
+\end{frame}
+
+\subsection{4.1 Cơ sở lý thuyết và phương pháp tiếp cận}
+\begin{frame}[t]{\textbf{\large Cơ sở lý thuyết và Phương pháp tiếp cận}}
+	\begin{itemize}
+		\item \textbf{1. Lựa chọn đặc trưng:} 
+		\begin{itemize}
+			\item \textit{Mô hình:} Cực tiểu hóa hàm phân thức \textbf{giả lồi} trên tập lồi (lớp con của bài toán $OP(f, C)$).
+			\item \textit{Mục đích:} So sánh với phương pháp thần kinh động lực học (neurodynamic).
+		\end{itemize}
+		\vspace{0.3cm}
+		
+		\item \textbf{2. Hồi quy Logistic đa biến:}
+		\begin{itemize}
+			\item \textit{Mô hình:} Bài toán \textbf{quy hoạch lồi}.
+			\item \textit{Giải pháp:} Dùng GDA và các biến thể GD.
+		\end{itemize}
+		\vspace{0.3cm}
+		
+		\item \textbf{3. Mạng Nơ-ron (Phân loại ảnh):}
+		\begin{itemize}
+			\item \textit{Mô hình:} Hàm mục tiêu \textbf{không lồi, không tựa lồi}.
+			\item \textit{Giải pháp:} Dùng biến thể ngẫu nhiên \textbf{SGDA} (heuristic).
+			\item \textit{Hội tụ:} Nếu dãy điểm có giới hạn $\rightarrow$ hội tụ về điểm dừng (Định lý 1).
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{4.2 Lựa chọn đặc trưng có giám sát}
+\begin{frame}[t]{\textbf{\large 4.2.1 Lựa chọn đặc trưng có giám sát: Thiết lập}}
+	\textbf{Đầu vào:}
+	\begin{itemize}
+		\item Tập $p$-đặc trưng $\mathcal{F} = \{F_1, ..., F_p\}$.
+		\item Tập $n$-mẫu $\{(x_i, y_i) | i = 1, ..., n\}$.
+		\item $x_i$: vector đặc trưng $p$-chiều; $y_i \in \{1, ..., m\}$: nhãn lớp.
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	\textbf{Mục tiêu:} Chọn tập con tối ưu $\{F_1, ..., F_k\} \subseteq \mathcal{F}$ thỏa mãn:
+	\begin{enumerate}
+		\item \textbf{Sự dư thừa ít nhất (Min Redundancy):} Cực tiểu hóa $w^T Q w$ ($Q$ là ma trận bán xác định dương).
+		\item \textbf{Mức độ liên quan cao nhất (Max Relevance):} Cực đại hóa $\rho^T w$ ($\rho$ là vector tham số liên quan).
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[t]{\textbf{\large 4.2.2 Mô hình bài toán tương đương}}
+	Kết hợp hai mục tiêu trên, ta có bài toán tối ưu hàm phân thức:
+	
+	\begin{equation}
+		\label{eq:14}
+		\begin{aligned}
+			& \text{minimize} \quad \frac{w^T Q w}{\rho^T w} \\
+			& \text{subject to} \quad e^T w = 1, \quad w \geq 0
+		\end{aligned}
+	\end{equation}
+	
+	Trong đó:
+	\begin{itemize}
+		\item $w = (w_1, ..., w_p)^T$: Vector điểm số đặc trưng cần xác định.
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	\textbf{Nhận xét quan trọng:}
+	Vì hàm mục tiêu là phân thức của một hàm lồi trên một hàm tuyến tính dương $\rightarrow$ Nó là \textbf{hàm giả lồi} trên tập ràng buộc.
+	$\Rightarrow$ Có thể giải bằng \textbf{Thuật toán GDA}.
+\end{frame}
+
+\begin{frame}[t]{\textbf{\large 4.2.3 Xây dựng tham số thực nghiệm (Dataset: Parkinsons)}}
+	\textbf{1. Ma trận hệ số tương đồng $Q = \delta I_p + S$:}
+	Với $S = (s_{ij})$ xác định bởi:
+	$$ s_{ij} = \max \left\{ 0, \frac{I(F_i; F_j; y)}{H(F_i) + H(F_j)} \right\} $$
+	
+	\footnotesize
+	Trong đó:
+	\begin{itemize}
+		\item Entropy thông tin: $H(\hat{X}) = - \sum_{\hat{x} \in \hat{X}} p(\hat{x}) \log p(\hat{x})$
+		\item Đa thông tin: $I(\hat{X}; \hat{Y}; \hat{Z}) = I(\hat{X}; \hat{Y}) - I(\hat{X}; \hat{Y} | \hat{Z})$
+		\item Thông tin tương hỗ có điều kiện:
+		$ I(\hat{X}; \hat{Y} | \hat{Z}) = \sum \sum \sum p(\hat{x}, \hat{y}, \hat{z}) \log \frac{p(\hat{x}, \hat{y} | \hat{z})}{p(\hat{x} | \hat{z})p(\hat{y} | \hat{z})} $
+	\end{itemize}
+	\normalsize
+	
+	\vspace{0.2cm}
+	\textbf{2. Vector mức độ liên quan $\rho$ (Fisher score):}
+	$$ \rho(F_i) = \frac{\sum_{j=1}^{K} n_j (\mu_{ij} - \mu_i)^2}{\sum_{j=1}^{K} n_j \sigma_{ij}^2} $$
+\end{frame}
+
+
+\begin{frame}[t]{\textbf{\large 4.2.4 Kết quả so sánh thực nghiệm}}
+	So sánh Thuật toán GDA (đề xuất) và Thuật toán RNN (Wang et al. 2021):
+	
+	\begin{table}[]
+		\centering
+		\begin{tabular}{|l|c|c|}
+			\hline
+			\textbf{Chỉ số} & \textbf{Thuật toán GDA} & \textbf{Thuật toán RNN} \\ \hline
+			Giá trị tối ưu $f(w^*)$ & \textbf{0.153478} & 0.153911 \\ \hline
+			Thời gian tính toán ($T$) & \textbf{10.034473s} & 49.324688s  \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	\vspace{0.5cm}
+	\textbf{Kết luận:}
+	\begin{itemize}
+		\item Thuật toán GDA tìm được giá trị tối ưu tốt hơn (nhỏ hơn).
+		\item Thời gian tính toán nhanh hơn gần gấp đôi so với RNN.
+		\item GDA vượt trội cả về độ chính xác và hiệu quả tính toán.
+	\end{itemize}
+\end{frame}
+\begin{frame}[t]{\textbf{\large 4.2.4 Kết quả so sánh thực nghiệm}}
+    \begin{center}
+        \includegraphics[width=\linewidth]{res/Figure_5_1.png}
+        {Hình 3: Kết quả cho bài toán lựa chọn đặc trưng}
+    \end{center}
+\end{frame}
+\subsection{4.3 Hồi quy Logistic}
+\begin{frame}[t]{\textbf{\large 4.3.1 Hồi quy Logistic đa biến: Thiết lập}}
+	\textbf{Bài toán:}
+	\begin{itemize}
+		\item Dữ liệu: $N$ quan sát $(a_i, b_i) \in \mathbb{R}^d \times \mathbb{R}$.
+		\item Hàm mất mát (Cross-entropy + chuẩn hóa $L_2$):
+	\end{itemize}
+	\begin{align*}
+		\bar{J}(x) = -\sum_{i=1}^{N} \left( b_i \log(\sigma(-x^T a_i)) + (1-b_i)\log(1-\sigma(-x^T a_i)) \right) + \frac{1}{2N}\|x\|^2
+	\end{align*}
+	
+	\textbf{Tham số thuật toán:}
+	\begin{itemize}
+		\item Hệ số Lipschitz ước lượng: $L \approx \frac{1}{2N}(\|A\|^2/2 + 1)$.
+		\item So sánh với:
+		\begin{enumerate}
+			\item GD (bước nhảy $1/L$).
+			\item Nesterov's accelerated method.
+		\end{enumerate}
+	\end{itemize}
+\end{frame}
+\begin{frame}[t]{\textbf{\large 4.3.2 Kết quả Hồi quy Logistic}}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\linewidth, height=4cm, keepaspectratio]{res/Figure_5_2_mush_compare.png}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\linewidth, height=4cm, keepaspectratio]{res/Figure_5_2_w8a_compare.png}
+        \end{column}
+    \end{columns}
+    {\centering \footnotesize Hình 4: Kết quả so sánh đối với dataset Mushrooms (bên trái) và W8a (bên phải) \par}
+
+    \vspace{0.1cm}
+    \textbf{Phân tích biểu đồ (Dataset: Mushrooms và W8a):}
+    \small 
+    \begin{itemize}
+        \setlength\itemsep{0em}
+        \item GDA vượt trội hơn GD và Nesterov về giá trị hàm mục tiêu.
+        \item \textbf{Hình 5} minh họa cơ chế tự thích nghi: Bước nhảy giảm dần từ giá trị ban đầu (với hệ số $\kappa = 0.75$).
+        \item \textbf{Hình 6} trình bày sự giảm kích thước bước nhảy từ một kích thước bước nhảy ban đầu liên quan đến các kết quả trong Hình 5.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{\textbf{\large 4.3.3 Kết quả Hồi quy Logistic}}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \centering
+            % Tăng chiều cao ảnh lên để tận dụng không gian slide
+            \includegraphics[width=\linewidth, height=6cm, keepaspectratio]{res/Figure_5_2_mush_compare_all.png} 
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth, height=6cm, keepaspectratio]{res/Figure_5_2_w8a_compare_all.png}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.5cm} % Tạo khoảng cách giữa ảnh và chú thích
+    
+    \begin{center}
+        \footnotesize {Hình 5: Kết quả so sánh đối với dataset Mushrooms (bên trái) và W8a (bên phải)}
+    \end{center}
+\end{frame}
+\begin{frame}{\textbf{\large 4.3.3 Kết quả Hồi quy Logistic (tiếp theo)}}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth, height=6cm, keepaspectratio]{res/Figure_5_2_mush_lr.png}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth, height=6cm, keepaspectratio]{res/Figure_5_2_w8a_lr.png}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.5cm} 
+    
+    \begin{center}
+        \footnotesize {Hình 6: Sự thay đổi bước nhảy đối với dataset Mushrooms (bên trái) và W8a (bên phải)}
+    \end{center}
+\end{frame}
+
+\subsection{4.4 Phân loại}
+\begin{frame}[t]{\textbf{\large 4.4.1 Mạng Nơ-ron cho phân loại ảnh}}
+	\textbf{Mục tiêu:}
+	Triển khai thuật toán đề xuất vào mô hình huấn luyện mạng nơ-ron (bài toán không lồi).
+	
+	\vspace{0.3cm}
+	\textbf{Cấu hình thực nghiệm:}
+	\begin{itemize}
+		\item \textbf{Mô hình:} Kiến trúc ResNet-18 tiêu chuẩn (PyTorch).
+		\item \textbf{Dữ liệu:} Cifar10 (Phân loại ảnh).
+		\item \textbf{Hàm mất mát:} Cross-entropy.
+		\item \textbf{Tham số:} Sử dụng thiết lập mặc định của Adam.
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	\textbf{Phương pháp so sánh:}
+	\begin{itemize}
+		\item Biến thể ngẫu nhiên của GDA (\textbf{Thuật toán SGDA}).
+		\item So với: Stochastic Gradient Descent (\textbf{SGD}).
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{\textbf{\large 4.4.2 Kết quả huấn luyện Mạng Nơ-ron}}
+	\textbf{Kết quả (Hình 7 \& 8):}
+	SGDA vượt trội hơn SGD về cả hai chỉ số quan trọng:
+	
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{res/ann_comparison_test_accuracy.png}
+		\end{figure}
+		\begin{center}
+            \footnotesize{ Hình 7: Độ chính xác kiểm thử (test accuracy) theo số vòng lặp khi huấn luyện ResNet-18.}
+		\end{center}
+		\column{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{res/ann_comparison_training_loss.png}	
+            \begin{center}
+                \footnotesize{Hình 8: Hàm mất mất huấn luyện (training loss) theo số vòng lặp cho ResNet-18.}
+            \end{center}
+		\end{figure}
+	\end{columns}
+\end{frame}
+
+
+
